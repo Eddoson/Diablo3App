@@ -2,6 +2,7 @@ package com.example.eddoson.diablo3app;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -185,6 +186,24 @@ public class FriendActivity extends ActionBarActivity
                 alertDialog.show();
 
                 return true;
+            }
+        });
+
+        //item click logic
+        lvFriends.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                //pull the friend we clicked on
+                Friend thisFriend = listFriends.get(position);
+
+                //create an intent and bundle the friend info
+                Intent intent = new Intent(FriendActivity.this, CharacterListActivity.class);
+                intent.putExtra(MainActivity.FRIEND_KEY, thisFriend);
+
+                //go
+                startActivity(intent);
             }
         });
     }

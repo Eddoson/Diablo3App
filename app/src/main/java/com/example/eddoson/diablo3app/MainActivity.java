@@ -18,6 +18,7 @@ public class MainActivity extends ActionBarActivity
     Button btnCharacters;
     Button btnGame;
     TextView tvLoggedInAs;
+    static String FRIEND_KEY = "friend";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

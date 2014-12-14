@@ -24,5 +24,7 @@
     <string name="string_button_add">Add</string>
     <string name="string_textview_label_username">Username</string>
     <string name="string_textview_label_paragon">Paragon</string>
+    <string name="title_activity_character_list">CharacterListActivity</string>
+    <string name="string_textview_characterlist_title">Character List</string>
 
 </resources>
