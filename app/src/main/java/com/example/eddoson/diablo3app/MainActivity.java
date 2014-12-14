@@ -1,13 +1,23 @@
 package com.example.eddoson.diablo3app;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.parse.ParseUser;
 
 
 public class MainActivity extends ActionBarActivity
 {
+    Button btnFriends;
+    Button btnCharacters;
+    Button btnGame;
+    TextView tvLoggedInAs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -15,7 +25,38 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //testing a commit again
+        //check to see if there is a current user
+        if (ParseUser.getCurrentUser() == null)
+        {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        }
+
+        //connect logic to the UI components
+        btnFriends = (Button) findViewById(R.id.buttonFriends);
+        tvLoggedInAs = (TextView) findViewById(R.id.textViewLoggedInAs);
+
+        //friend button logic
+        btnFriends.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(MainActivity.this, FriendActivity.class));
+            }
+        });
+
+        //set loggedinas to the current username
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null)
+        {
+            //if we are here then there is a current user
+            tvLoggedInAs.setText("Logged in as: " + currentUser.getUsername());
+        }
+        else
+        {
+            //somehow the user got to the main menu without logging in
+            tvLoggedInAs.setText("Not logged in!!");
+        }
     }
 
 
