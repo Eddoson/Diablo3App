@@ -58,6 +58,7 @@ public class LoginActivity extends ActionBarActivity
                             //if we're here, everything worked! yay!
                             Toast.makeText(LoginActivity.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
                         }
                         else
                         {

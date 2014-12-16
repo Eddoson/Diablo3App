@@ -54,14 +54,24 @@ public class FriendActivity extends ActionBarActivity
         {
             public void done(List<ParseUser> objects, ParseException e)
             {
-                if (e == null)
+                if (e != null)
                 {
-                    // The query was successful.
-                    //pull the first parseuser from objects list
-                    ParseUser newUser = objects.get(0);
+                    //bad
+                    Toast.makeText(FriendActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+                // The query was successful.
+                //pull the first parseuser from objects list
+                ParseUser newUser = objects.get(0);
+
+                //if testArray is null, the user has no friends. :(
+                if (newUser.getList("friends") != null)
+                {
                     //pull list of friends from parse
-                    ArrayList<Object> testArray = (ArrayList<Object>) newUser.getList("friends");
+                    List<Object> testArray = new ArrayList<Object>();
+                    testArray.addAll(newUser.getList("friends"));
+
                     for (Object obj : testArray)
                     {
                         //make a new friend object for each incoming friend name
@@ -72,14 +82,9 @@ public class FriendActivity extends ActionBarActivity
                     }
                     //redraw the listview
                     updateList();
-
-                }
-                else
-                {
-                    // Something went wrong.
-                    Toast.makeText(FriendActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
 
         //add button on click logic
@@ -90,15 +95,45 @@ public class FriendActivity extends ActionBarActivity
             {
                 if (!etFriendText.getText().toString().isEmpty())
                 {
-                    //pull username from edittext then wrap in Friend object
-                    String newUsername = etFriendText.getText().toString();
-                    Friend newFriend = new Friend(newUsername);
+                    //pull friends array from this user's friends column
+                    ParseQuery<ParseUser> query = ParseUser.getQuery();
+                    query.whereEqualTo("username", currentUser.getUsername());
+                    query.findInBackground(new FindCallback<ParseUser>()
+                    {
+                        @Override
+                        public void done(List<ParseUser> parseUsers, ParseException e)
+                        {
+                            if (e != null)
+                            {
+                                //bad
+                                Toast.makeText(FriendActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 
-                    //update the list of friends with the new friend
-                    listFriends.add(newFriend);
+                            //pull the queried user from the list of parseusers
+                            ParseUser thisUser = parseUsers.get(0);
 
-                    //redraw the listview
-                    updateList();
+                            //pull username from edittext then wrap in Friend object
+                            String newUsername = etFriendText.getText().toString();
+                            final Friend newFriend = new Friend(newUsername);
+
+                            //add the new username to the array in the friends column
+                            thisUser.add("friends", newUsername);
+                            thisUser.saveInBackground(new SaveCallback()
+                            {
+                                @Override
+                                public void done(ParseException e)
+                                {
+                                    //if we are here, everything parse-wise went well.
+                                    //update the list of friends with the new friend
+                                    listFriends.add(newFriend);
+
+                                    //redraw the listview
+                                    updateList();
+                                }
+                            });
+                        }
+                    });
                 }
             }
         });
@@ -210,11 +245,14 @@ public class FriendActivity extends ActionBarActivity
 
     private void updateList()
     {
-        //run adapter
-        adapter = new FriendAdapter(FriendActivity.this, R.layout.friend_list_component, listFriends);
+        if (!listFriends.isEmpty())
+        {
+            //run adapter
+            adapter = new FriendAdapter(FriendActivity.this, R.layout.friend_list_component, listFriends);
 
-        //attach adapter to listview
-        lvFriends.setAdapter(adapter);
+            //attach adapter to listview
+            lvFriends.setAdapter(adapter);
+        }
     }
 
     @Override

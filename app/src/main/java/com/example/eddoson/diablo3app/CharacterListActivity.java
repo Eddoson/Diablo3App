@@ -53,6 +53,7 @@ public class CharacterListActivity extends ActionBarActivity
         tvUsername.setText("User: " + currentFriend.getUsername());
         tvParagon.setText("Paragon: " + currentFriend.getParagon());
 
+        //mock up stuff
         adapter = new CharacterAdapter(CharacterListActivity.this, R.layout.character_list_component, characterList);
         lvCharacters.setAdapter(adapter);
     }

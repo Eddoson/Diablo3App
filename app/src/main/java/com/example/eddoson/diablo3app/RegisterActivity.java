@@ -21,6 +21,7 @@ public class RegisterActivity extends ActionBarActivity
     EditText etUsername;
     EditText etPassword;
     EditText etConfirmPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -64,17 +65,16 @@ public class RegisterActivity extends ActionBarActivity
                     @Override
                     public void done(ParseException e)
                     {
-                        if (e == null)
+                        if (e != null)
                         {
-                            //everything worked! yay!
-                            Toast.makeText(RegisterActivity.this, "Signed up successfully!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                        }
-                        else
-                        {
-                            //boo something broke
+                            //bad
                             Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            return;
                         }
+                        //everything worked! yay!
+                        Toast.makeText(RegisterActivity.this, "Signed up successfully!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                        finish();
                     }
                 });
             }

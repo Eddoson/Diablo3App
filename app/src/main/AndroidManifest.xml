@@ -36,6 +36,14 @@
             android:name=".CharacterListActivity"
             android:label="@string/title_activity_character_list" >
         </activity>
+        <activity
+            android:name=".GameMenuActivity"
+            android:label="@string/title_activity_game_menu" >
+        </activity>
+        <activity
+            android:name=".LearningGameActivity"
+            android:label="@string/title_activity_learning_game" >
+        </activity>
     </application>
 
 </manifest>

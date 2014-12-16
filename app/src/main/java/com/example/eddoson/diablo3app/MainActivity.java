@@ -17,6 +17,7 @@ public class MainActivity extends ActionBarActivity
     Button btnFriends;
     Button btnCharacters;
     Button btnGame;
+    Button btnLogout;
     TextView tvLoggedInAs;
     static String FRIEND_KEY = "friend";
 
@@ -34,7 +35,10 @@ public class MainActivity extends ActionBarActivity
 
         //connect logic to the UI components
         btnFriends = (Button) findViewById(R.id.buttonFriends);
+        btnLogout = (Button) findViewById(R.id.buttonLogout);
+        btnGame = (Button) findViewById(R.id.buttonGame);
         tvLoggedInAs = (TextView) findViewById(R.id.textViewLoggedInAs);
+
 
         //friend button logic
         btnFriends.setOnClickListener(new View.OnClickListener()
@@ -58,6 +62,29 @@ public class MainActivity extends ActionBarActivity
             //somehow the user got to the main menu without logging in
             tvLoggedInAs.setText("Not logged in!!");
         }
+
+        //logout button logic
+        btnLogout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ParseUser.logOut();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
+
+        //game button logic
+        btnGame.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //go to the game menu
+                startActivity(new Intent(MainActivity.this, GameMenuActivity.class));
+            }
+        });
     }
 
 

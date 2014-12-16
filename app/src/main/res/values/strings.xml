@@ -26,5 +26,14 @@
     <string name="string_textview_label_paragon">Paragon</string>
     <string name="title_activity_character_list">CharacterListActivity</string>
     <string name="string_textview_characterlist_title">Character List</string>
+    <string name="string_button_logout">Logout</string>
+    <string name="title_activity_game_menu">GameMenuActivity</string>
+    <string name="string_textview_game_menu_title">Game Menu</string>
+    <string name="string_button_learning_mode">Learning Mode</string>
+    <string name="string_button_ranked_mode">Ranked Mode</string>
+    <string name="string_button_leaderboard">Leaderboards</string>
+    <string name="title_activity_learning_game">LearningGameActivity</string>
+    <string name="string_textview_learning_game_title">Learning Mode</string>
+    <string name="string_button_submit">Submit</string>
 
 </resources>
