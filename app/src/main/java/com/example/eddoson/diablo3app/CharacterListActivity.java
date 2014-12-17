@@ -43,7 +43,7 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
         currentFriend = (Friend) getIntent().getExtras().get(MainActivity.FRIEND_KEY);
 
         //trigger api handler to start
-        new BattleNetAPIHandler(CharacterListActivity.this).execute(currentFriend.getBnetUsername());
+        new BattleNetAPIHandler(CharacterListActivity.this).execute(MainActivity.MAIN_API_URL + currentFriend.getBnetUsername());
 
         //initialize some variables
         characterList = new ArrayList<>();

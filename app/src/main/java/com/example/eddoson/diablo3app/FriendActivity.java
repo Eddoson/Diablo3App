@@ -98,7 +98,7 @@ public class FriendActivity extends ActionBarActivity implements iBattleNetJSONI
             {
                 if (!etFriendText.getText().toString().isEmpty())
                 {
-                    new BattleNetAPIHandler(FriendActivity.this).execute(etFriendText.getText().toString());
+                    new BattleNetAPIHandler(FriendActivity.this).execute(MainActivity.MAIN_API_URL + etFriendText.getText().toString());
                 }
             }
         });
@@ -252,7 +252,7 @@ public class FriendActivity extends ActionBarActivity implements iBattleNetJSONI
         if (!root.isNull("code"))
         {
             //bad username, try again
-            Toast.makeText(FriendActivity.this, "Username not found! Try again with <username>-<number>", Toast.LENGTH_SHORT).show();
+            Toast.makeText(FriendActivity.this, "Username not found! Try again with username-number", Toast.LENGTH_SHORT).show();
             return;
         }
 

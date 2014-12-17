@@ -21,6 +21,7 @@ public class MainActivity extends ActionBarActivity
     TextView tvLoggedInAs;
     ParseUser currentUser;
     static String FRIEND_KEY = "friend";
+    static String MAIN_API_URL = "http://us.battle.net/api/d3/profile/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,7 +50,7 @@ public class MainActivity extends ActionBarActivity
         });
 
         //set loggedinas to the current username
-        final ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser = ParseUser.getCurrentUser();
         if (currentUser != null)
         {
             //if we are here then there is a current user
@@ -60,6 +61,7 @@ public class MainActivity extends ActionBarActivity
         {
             //somehow the user got to the main menu without logging in
             tvLoggedInAs.setText("Not logged in!!");
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
 
         //logout button logic

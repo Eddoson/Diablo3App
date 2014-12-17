@@ -30,9 +30,9 @@ public class BattleNetAPIHandler extends AsyncTask<String, Void, JSONObject>
     @Override
     protected JSONObject doInBackground(String... params)
     {
-        String usernameParam = params[0];
+
         RequestQueue queue = Volley.newRequestQueue(activity);
-        String url = "http://us.battle.net/api/d3/profile/" + usernameParam + "/";
+        String url = params[0] + "/";
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(url, null, future, future);
         queue.add(request);

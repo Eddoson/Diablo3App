@@ -35,5 +35,7 @@
     <string name="title_activity_learning_game">LearningGameActivity</string>
     <string name="string_textview_learning_game_title">Learning Mode</string>
     <string name="string_button_submit">Submit</string>
+    <string name="string_textview_bnet_username">Format: username-number</string>
+    <string name="hint_edittext_battlenet_username">Enter your battle.net username and tag</string>
 
 </resources>
