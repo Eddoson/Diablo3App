@@ -7,5 +7,5 @@ NOTE: This app needs an Application file that is connected to your own Parse.com
      public void onCreate()
      {
          super.onCreate();
-         Parse.initialize(this, <key>, <key>);
+         Parse.initialize(this, "privatekey", "publickey");
      }
