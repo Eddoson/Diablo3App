@@ -20,11 +20,14 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class FriendActivity extends ActionBarActivity
+public class FriendActivity extends ActionBarActivity implements iBattleNetJSONInterface
 {
     Button btnAdd;
     ListView lvFriends;
@@ -95,45 +98,7 @@ public class FriendActivity extends ActionBarActivity
             {
                 if (!etFriendText.getText().toString().isEmpty())
                 {
-                    //pull friends array from this user's friends column
-                    ParseQuery<ParseUser> query = ParseUser.getQuery();
-                    query.whereEqualTo("username", currentUser.getUsername());
-                    query.findInBackground(new FindCallback<ParseUser>()
-                    {
-                        @Override
-                        public void done(List<ParseUser> parseUsers, ParseException e)
-                        {
-                            if (e != null)
-                            {
-                                //bad
-                                Toast.makeText(FriendActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-
-                            //pull the queried user from the list of parseusers
-                            ParseUser thisUser = parseUsers.get(0);
-
-                            //pull username from edittext then wrap in Friend object
-                            String newUsername = etFriendText.getText().toString();
-                            final Friend newFriend = new Friend(newUsername);
-
-                            //add the new username to the array in the friends column
-                            thisUser.add("friends", newUsername);
-                            thisUser.saveInBackground(new SaveCallback()
-                            {
-                                @Override
-                                public void done(ParseException e)
-                                {
-                                    //if we are here, everything parse-wise went well.
-                                    //update the list of friends with the new friend
-                                    listFriends.add(newFriend);
-
-                                    //redraw the listview
-                                    updateList();
-                                }
-                            });
-                        }
-                    });
+                    new BattleNetAPIHandler(FriendActivity.this).execute(etFriendText.getText().toString());
                 }
             }
         });
@@ -278,5 +243,58 @@ public class FriendActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onUpdateJSONObject(JSONObject root) throws JSONException
+    {
+        //check for bad username
+        if (!root.isNull("code"))
+        {
+            //bad username, try again
+            Toast.makeText(FriendActivity.this, "Username not found! Try again with <username>-<number>", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //pull friends array from this user's friends column
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("username", currentUser.getUsername());
+        query.findInBackground(new FindCallback<ParseUser>()
+        {
+            @Override
+            public void done(List<ParseUser> parseUsers, ParseException e)
+            {
+                if (e != null)
+                {
+                    //bad
+                    Toast.makeText(FriendActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //pull the queried user from the list of parseusers
+                ParseUser thisUser = parseUsers.get(0);
+
+                //pull username from edittext then wrap in Friend object
+                String newUsername = etFriendText.getText().toString();
+                final Friend newFriend = new Friend(newUsername);
+
+                //add the new username to the array in the friends column
+                thisUser.add("friends", newUsername);
+                thisUser.saveInBackground(new SaveCallback()
+                {
+                    @Override
+                    public void done(ParseException e)
+                    {
+                        //if we are here, everything parse-wise went well.
+                        //update the list of friends with the new friend
+                        listFriends.add(newFriend);
+
+                        //redraw the listview
+                        updateList();
+                    }
+                });
+            }
+        });
+
     }
 }
