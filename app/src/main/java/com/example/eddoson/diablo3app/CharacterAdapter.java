@@ -10,7 +10,8 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by Ed-Desktop on 12/13/2014.
+ * This is the adapter for populating the list view on the character list activity
+ * @author Ed Sutton
  */
 public class CharacterAdapter extends ArrayAdapter<Character>
 {

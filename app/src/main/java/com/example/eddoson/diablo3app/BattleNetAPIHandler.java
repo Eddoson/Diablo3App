@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * Handle all API requests to Battle.net
+ * @author Ed Sutton
  */
 public class BattleNetAPIHandler extends AsyncTask<String, Void, JSONObject>
 {

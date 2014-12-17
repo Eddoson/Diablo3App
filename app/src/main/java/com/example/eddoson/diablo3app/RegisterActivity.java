@@ -17,7 +17,10 @@ import com.parse.SignUpCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+/**
+ * Handles all registering related activities
+ * @author Ed Sutton
+ */
 public class RegisterActivity extends ActionBarActivity implements iBattleNetJSONInterface
 {
     Button btnDone;

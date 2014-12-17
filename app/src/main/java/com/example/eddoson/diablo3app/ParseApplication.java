@@ -5,7 +5,8 @@ import android.app.Application;
 import com.parse.Parse;
 
 /**
- * Created by Ed-Desktop on 12/12/2014.
+ * Controls initializing parse
+ * @author Ed Sutton
  */
 public class ParseApplication extends Application
 {

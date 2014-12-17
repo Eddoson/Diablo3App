@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import com.parse.ParseUser;
 
-
+/**
+ * Main thread/activity for the app. Handles the main menu interactions
+ * @author Ed Sutton
+ */
 public class MainActivity extends ActionBarActivity
 {
     Button btnFriends;

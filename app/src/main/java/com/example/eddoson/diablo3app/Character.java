@@ -2,6 +2,7 @@ package com.example.eddoson.diablo3app;
 
 /**
  * Wrapper class to store character information
+ * @author Ed Sutton
  */
 public class Character
 {

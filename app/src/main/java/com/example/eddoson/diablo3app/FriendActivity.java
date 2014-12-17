@@ -26,7 +26,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @author Ed Sutton
+ */
 public class FriendActivity extends ActionBarActivity implements iBattleNetJSONInterface
 {
     Button btnAdd;

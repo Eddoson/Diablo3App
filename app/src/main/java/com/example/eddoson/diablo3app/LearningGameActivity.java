@@ -11,7 +11,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-
+/**
+ * @author Ed Sutton
+ */
 public class LearningGameActivity extends ActionBarActivity
 {
     Button btnSubmit;

@@ -8,7 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-
+/**
+ * @author Ed Sutton
+ */
 public class GameMenuActivity extends ActionBarActivity
 {
     Button btnLearning;

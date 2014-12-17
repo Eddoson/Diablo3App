@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Wrapper class for friend information
+ * @author Ed Sutton
  */
 public class Friend implements Serializable
 {

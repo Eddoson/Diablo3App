@@ -16,7 +16,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Handles logic backend for the character list activity
+ * @author Ed Sutton
+ */
 public class CharacterListActivity extends ActionBarActivity implements iBattleNetJSONInterface
 {
     TextView tvUsername;
