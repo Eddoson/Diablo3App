@@ -1,20 +1,16 @@
 package com.example.eddoson.diablo3app;
 
 import android.app.Activity;
-import android.util.Log;
+import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -23,12 +19,18 @@ import java.util.concurrent.ExecutionException;
  * a JSON Object to reference to after pulling information from
  * the Battle.net API.
  */
-public class BattleNetAPIHandler
+public class BattleNetAPIHandler extends AsyncTask<Void, Void, JSONObject>
 {
-    Date LastPulltimestamp;
-    static JSONObject root;
+    Activity activity;
+    iBattleNetJSONInterface iJsonInterfaceObject;
 
-    public static List<Character> getCharacters(Activity activity) throws JSONException
+    public BattleNetAPIHandler(Activity activity)
+    {
+        this.activity = activity;
+        this.iJsonInterfaceObject = (iBattleNetJSONInterface) activity;
+    }
+
+    /* public static List<Character> getCharacters(Activity activity) throws JSONException
     {
         //this will be the list of characters
         final List<Character> characterList = new ArrayList<>();
@@ -55,54 +57,43 @@ public class BattleNetAPIHandler
         }
         Log.d("volley", characterList.toString());
         return characterList;
-    }
+    }*/
 
-    public static void updateJSONObject(Activity activity)
+    @Override
+    protected JSONObject doInBackground(Void... params)
     {
         RequestQueue queue = Volley.newRequestQueue(activity);
         String url = "http://us.battle.net/api/d3/profile/Eddoson-1118/";
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(url, null, future, future);
         queue.add(request);
+        JSONObject root = new JSONObject();
 
-        try {
-            root = future.get(); // this will block
-        } catch (InterruptedException e) {
+        try
+        {
+           root = future.get(); // this will block
+        } catch (InterruptedException e)
+        {
             // exception handling
-        } catch (ExecutionException e) {
+        } catch (ExecutionException e)
+        {
             // exception handling
         }
-        Log.d("volley", root.toString());
-
-
-
-
-
-
-
-        /*
-        String url = "http://us.battle.net/api/d3/profile/Eddoson-1118/";
-        RequestQueue queue = Volley.newRequestQueue(activity);
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response)
-                    {
-                        //yay everything worked
-                        root = response;
-                    }
-                }, new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        //boo, something broke
-                        Log.d("volley", error.getMessage());
-                    }
-                });
-
-            queue.add(jsObjRequest);*/
+        return root;
     }
 
+    @Override
+    protected void onPostExecute(JSONObject root)
+    {
+        //now we have the JSONObject from doInBackground()
+        //send it to the respective activity callback
+        try
+        {
+            iJsonInterfaceObject.onUpdateJSONObject(root);
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        super.onPostExecute(root);
+    }
 }

@@ -40,8 +40,10 @@ public class RegisterActivity extends ActionBarActivity
             @Override
             public void onClick(View v)
             {
-                //pull out edit text info
+                //pull out edit text info, changing usernames to initial caps
+                //thanks to Trystan34!!
                 String username = etUsername.getText().toString();
+                username = username.substring(0,1).toUpperCase() + username.substring(1);
                 String password = etPassword.getText().toString();
                 String confirmPassword = etConfirmPassword.getText().toString();
 

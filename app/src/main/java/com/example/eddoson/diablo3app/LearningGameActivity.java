@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -39,16 +37,6 @@ public class LearningGameActivity extends ActionBarActivity
         rbB = (RadioButton) findViewById(R.id.radioButtonB);
         rbC = (RadioButton) findViewById(R.id.radioButtonC);
         rbD = (RadioButton) findViewById(R.id.radioButtonD);
-
-        //spinner logic for clicking on an item
-        spnrItemType.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-
-            }
-        });
 
         //initialize
         adapter = new ArrayAdapter(LearningGameActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerItemList);

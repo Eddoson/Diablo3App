@@ -9,11 +9,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CharacterListActivity extends ActionBarActivity
+public class CharacterListActivity extends ActionBarActivity implements iBattleNetJSONInterface
 {
     TextView tvUsername;
     TextView tvParagon;
@@ -35,14 +39,14 @@ public class CharacterListActivity extends ActionBarActivity
             startActivity(new Intent(CharacterListActivity.this, MainActivity.class));
         }
 
+        //trigger api handler to start
+        new BattleNetAPIHandler(CharacterListActivity.this).execute();
+
         //initialize the incoming Friend
         currentFriend = (Friend) getIntent().getExtras().get(MainActivity.FRIEND_KEY);
 
         //initialize some variables
         characterList = new ArrayList<>();
-        characterList.add(new Character("Odell", "Wizard"));
-        characterList.add(new Character("Tim", "Barbarian"));
-        characterList.add(new Character("Ray", "Demon Hunter"));
 
         //connect logic to UI components
         tvUsername = (TextView) findViewById(R.id.textViewUsername);
@@ -52,10 +56,6 @@ public class CharacterListActivity extends ActionBarActivity
         //set text for our text views
         tvUsername.setText("User: " + currentFriend.getUsername());
         tvParagon.setText("Paragon: " + currentFriend.getParagon());
-
-        //mock up stuff
-        adapter = new CharacterAdapter(CharacterListActivity.this, R.layout.character_list_component, characterList);
-        lvCharacters.setAdapter(adapter);
     }
 
 
@@ -82,5 +82,55 @@ public class CharacterListActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Callback from the BattleNetAPIHandler with JSONOBject data
+     * @param root
+     * @throws JSONException
+     */
+    @Override
+    public void onUpdateJSONObject(JSONObject root) throws JSONException
+    {
+        String name = "Empty";
+        String characterClass = "Empty";
+
+        //this is the array of characters/heroes from the api
+        JSONArray heroesArray = root.getJSONArray("heroes");
+
+        //iterate through the array of heroes and make a list of characters
+        for (int i = 0; i < heroesArray.length(); i++)
+        {
+            //pull the hero object from array
+            JSONObject heroObject = (JSONObject) heroesArray.get(i);
+
+            //pull name and class from object, create Character object
+            name = heroObject.getString("name");
+            characterClass = heroObject.getString("class");
+
+            //initial caps the class
+            characterClass = characterClass.substring(0, 1).toUpperCase() + characterClass.substring(1);
+            Character newCharacter = new Character(name, characterClass);
+
+            //add the new character to the list
+            characterList.add(newCharacter);
+        }
+
+        //redraw the UI with the new list
+        updateList();
+
+        //update paragon level at the top of the screen
+        String paragon = root.getString("paragonLevel");
+        tvParagon.setText("Paragon: " + paragon);
+    }
+
+    /**
+     * Updates UI with new character list
+     */
+    private void updateList()
+    {
+        //update the UI using the new character list
+        adapter = new CharacterAdapter(CharacterListActivity.this, R.layout.character_list_component, characterList);
+        lvCharacters.setAdapter(adapter);
     }
 }

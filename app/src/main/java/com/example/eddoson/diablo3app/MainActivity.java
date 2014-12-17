@@ -27,18 +27,12 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //check to see if there is a current user
-        if (ParseUser.getCurrentUser() == null)
-        {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }
-
         //connect logic to the UI components
         btnFriends = (Button) findViewById(R.id.buttonFriends);
         btnLogout = (Button) findViewById(R.id.buttonLogout);
         btnGame = (Button) findViewById(R.id.buttonGame);
+        btnCharacters = (Button) findViewById(R.id.buttonCharacters);
         tvLoggedInAs = (TextView) findViewById(R.id.textViewLoggedInAs);
-
 
         //friend button logic
         btnFriends.setOnClickListener(new View.OnClickListener()
@@ -55,7 +49,8 @@ public class MainActivity extends ActionBarActivity
         if (currentUser != null)
         {
             //if we are here then there is a current user
-            tvLoggedInAs.setText("Logged in as: " + currentUser.getUsername());
+            String username = currentUser.getUsername();
+            tvLoggedInAs.setText("Logged in as: " + username);
         }
         else
         {
@@ -83,6 +78,22 @@ public class MainActivity extends ActionBarActivity
             {
                 //go to the game menu
                 startActivity(new Intent(MainActivity.this, GameMenuActivity.class));
+            }
+        });
+
+        //character list button logic
+        btnCharacters.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //put ourselves into a Friend object
+                Friend newFriend = new Friend(ParseUser.getCurrentUser().getUsername());
+
+                //create intent, put Friend object into it, start character list activity
+                Intent intent = new Intent(MainActivity.this, CharacterListActivity.class);
+                intent.putExtra(MainActivity.FRIEND_KEY, newFriend);
+                startActivity(intent);
             }
         });
     }

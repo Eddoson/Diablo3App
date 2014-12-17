@@ -43,8 +43,9 @@ public class LoginActivity extends ActionBarActivity
             @Override
             public void onClick(View v)
             {
-                //pull username/password info
+                //pull username/password info and initial caps
                 String username = etUsername.getText().toString();
+                username = username.substring(0, 1).toUpperCase() + username.substring(1);
                 String password = etPassword.getText().toString();
 
                 //login using the info provided in our edit texts
