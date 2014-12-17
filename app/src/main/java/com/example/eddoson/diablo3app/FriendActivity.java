@@ -175,7 +175,7 @@ public class FriendActivity extends ActionBarActivity
                                 ArrayList<Object> parseFriendArray = (ArrayList<Object>) user.getList("friends");
 
                                 //remove the clicked friend from the arraylist returned from parse
-                                int index = parseFriendArray.indexOf(listFriends.get(position).getUsername());
+                                int index = parseFriendArray.indexOf(listFriends.get(position).getBnetUsername());
                                 //remove the friend we clicked on
                                 parseFriendArray.remove(index);
 

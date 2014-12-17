@@ -39,11 +39,11 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
             startActivity(new Intent(CharacterListActivity.this, MainActivity.class));
         }
 
-        //trigger api handler to start
-        new BattleNetAPIHandler(CharacterListActivity.this).execute();
-
         //initialize the incoming Friend
         currentFriend = (Friend) getIntent().getExtras().get(MainActivity.FRIEND_KEY);
+
+        //trigger api handler to start
+        new BattleNetAPIHandler(CharacterListActivity.this).execute(currentFriend.getBnetUsername());
 
         //initialize some variables
         characterList = new ArrayList<>();
@@ -54,7 +54,7 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
         lvCharacters = (ListView) findViewById(R.id.listViewCharacterList);
 
         //set text for our text views
-        tvUsername.setText("User: " + currentFriend.getUsername());
+        tvUsername.setText("User: " + currentFriend.getBnetUsername());
         tvParagon.setText("Paragon: " + currentFriend.getParagon());
     }
 
@@ -85,7 +85,7 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
     }
 
     /**
-     * Callback from the BattleNetAPIHandler with JSONOBject data
+     * Callback from the BattleNetAPIHandler with JSONObject data
      * @param root
      * @throws JSONException
      */

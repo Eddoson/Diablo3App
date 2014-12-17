@@ -45,7 +45,7 @@ public class FriendAdapter extends ArrayAdapter
         TextView tvParagon = (TextView) convertView.findViewById(R.id.textViewParagon);
 
         //set the friend info to the text views
-        tvUsername.setText(friend.getUsername());
+        tvUsername.setText(friend.getBnetUsername());
         tvParagon.setText(friend.getParagon());
 
         return convertView;

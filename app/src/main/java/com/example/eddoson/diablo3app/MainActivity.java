@@ -19,6 +19,7 @@ public class MainActivity extends ActionBarActivity
     Button btnGame;
     Button btnLogout;
     TextView tvLoggedInAs;
+    ParseUser currentUser;
     static String FRIEND_KEY = "friend";
 
     @Override
@@ -34,6 +35,9 @@ public class MainActivity extends ActionBarActivity
         btnCharacters = (Button) findViewById(R.id.buttonCharacters);
         tvLoggedInAs = (TextView) findViewById(R.id.textViewLoggedInAs);
 
+        //initialize
+        currentUser = ParseUser.getCurrentUser();
+
         //friend button logic
         btnFriends.setOnClickListener(new View.OnClickListener()
         {
@@ -45,7 +49,7 @@ public class MainActivity extends ActionBarActivity
         });
 
         //set loggedinas to the current username
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        final ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null)
         {
             //if we are here then there is a current user
@@ -88,7 +92,7 @@ public class MainActivity extends ActionBarActivity
             public void onClick(View v)
             {
                 //put ourselves into a Friend object
-                Friend newFriend = new Friend(ParseUser.getCurrentUser().getUsername());
+                Friend newFriend = new Friend((String) currentUser.get("bnetUsername"));
 
                 //create intent, put Friend object into it, start character list activity
                 Intent intent = new Intent(MainActivity.this, CharacterListActivity.class);

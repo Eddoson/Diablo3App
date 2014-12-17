@@ -14,12 +14,9 @@ import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Handle all API requests and produce useful objects such as
- * Character, Friend, etc. The object of this type will store
- * a JSON Object to reference to after pulling information from
- * the Battle.net API.
+ * Handle all API requests to Battle.net
  */
-public class BattleNetAPIHandler extends AsyncTask<Void, Void, JSONObject>
+public class BattleNetAPIHandler extends AsyncTask<String, Void, JSONObject>
 {
     Activity activity;
     iBattleNetJSONInterface iJsonInterfaceObject;
@@ -30,40 +27,12 @@ public class BattleNetAPIHandler extends AsyncTask<Void, Void, JSONObject>
         this.iJsonInterfaceObject = (iBattleNetJSONInterface) activity;
     }
 
-    /* public static List<Character> getCharacters(Activity activity) throws JSONException
-    {
-        //this will be the list of characters
-        final List<Character> characterList = new ArrayList<>();
-        String name = null;
-        String characterClass = null;
-
-        //this should wait until response comes back, then set to root
-        updateJSONObject(activity);
-
-        //grab the JSONArray of heroes from root
-        JSONArray heroesArray = root.getJSONArray("heroes");
-        for (int i = 0; i < heroesArray.length(); i++)
-        {
-            //pull the hero object from array
-            JSONObject heroObject = (JSONObject) heroesArray.get(i);
-
-            //pull name and class from object, create Character object
-            name = heroObject.getString("name");
-            characterClass = heroObject.getString("class");
-            Character newCharacter = new Character(name, characterClass);
-
-            //add the new character to the list
-            characterList.add(newCharacter);
-        }
-        Log.d("volley", characterList.toString());
-        return characterList;
-    }*/
-
     @Override
-    protected JSONObject doInBackground(Void... params)
+    protected JSONObject doInBackground(String... params)
     {
+        String usernameParam = params[0];
         RequestQueue queue = Volley.newRequestQueue(activity);
-        String url = "http://us.battle.net/api/d3/profile/Eddoson-1118/";
+        String url = "http://us.battle.net/api/d3/profile/" + usernameParam + "/";
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(url, null, future, future);
         queue.add(request);

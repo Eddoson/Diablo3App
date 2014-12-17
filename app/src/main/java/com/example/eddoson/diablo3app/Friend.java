@@ -7,28 +7,27 @@ import java.io.Serializable;
  */
 public class Friend implements Serializable
 {
-    String username, paragon;
+    String bnetUsername, paragon;
 
-    public Friend(String username)
+    public Friend(String bnetUsername, String paragon)
     {
-        this.username = username;
-        this.paragon = "0";
-    }
-
-    public Friend(String username, String paragon)
-    {
-        this.username = username;
+        this.bnetUsername = bnetUsername;
         this.paragon = paragon;
     }
 
-    public String getUsername()
+    public Friend(String bnetUsername)
     {
-        return username;
+        this.bnetUsername = bnetUsername;
     }
 
-    public void setUsername(String username)
+    public String getBnetUsername()
     {
-        this.username = username;
+        return bnetUsername;
+    }
+
+    public void setBnetUsername(String bnetUsername)
+    {
+        this.bnetUsername = bnetUsername;
     }
 
     public String getParagon()
@@ -39,6 +38,15 @@ public class Friend implements Serializable
     public void setParagon(String paragon)
     {
         this.paragon = paragon;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Friend{" +
+                "bnetUsername='" + bnetUsername + '\'' +
+                ", paragon='" + paragon + '\'' +
+                '}';
     }
 
     @Override
@@ -55,11 +63,11 @@ public class Friend implements Serializable
 
         Friend friend = (Friend) o;
 
-        if (paragon != null ? !paragon.equals(friend.paragon) : friend.paragon != null)
+        if (bnetUsername != null ? !bnetUsername.equals(friend.bnetUsername) : friend.bnetUsername != null)
         {
             return false;
         }
-        if (username != null ? !username.equals(friend.username) : friend.username != null)
+        if (paragon != null ? !paragon.equals(friend.paragon) : friend.paragon != null)
         {
             return false;
         }
@@ -70,17 +78,8 @@ public class Friend implements Serializable
     @Override
     public int hashCode()
     {
-        int result = username != null ? username.hashCode() : 0;
+        int result = bnetUsername != null ? bnetUsername.hashCode() : 0;
         result = 31 * result + (paragon != null ? paragon.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Friend{" +
-                "username='" + username + '\'' +
-                ", paragon='" + paragon + '\'' +
-                '}';
     }
 }
