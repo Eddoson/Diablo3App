@@ -33,7 +33,8 @@ public class BattleNetAPIHandler extends AsyncTask<String, Void, JSONObject>
     {
 
         RequestQueue queue = Volley.newRequestQueue(activity);
-        String url = params[0] + "/";
+        //this url is coming in from params, which is set up when this class is used in the execute() method
+        String url = params[0];
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(url, null, future, future);
         queue.add(request);

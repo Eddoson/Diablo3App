@@ -24,6 +24,7 @@ public class MainActivity extends ActionBarActivity
     TextView tvLoggedInAs;
     ParseUser currentUser;
     static String FRIEND_KEY = "friend";
+    static String CHARACTER_KEY = "character";
     static String MAIN_API_URL = "http://us.battle.net/api/d3/profile/";
 
     @Override

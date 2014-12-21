@@ -55,7 +55,7 @@ public class RegisterActivity extends ActionBarActivity implements iBattleNetJSO
                 }
 
                 String bnetUsername = etBnetUsername.getText().toString();
-                new BattleNetAPIHandler(RegisterActivity.this).execute(bnetUsername);
+                new BattleNetAPIHandler(RegisterActivity.this).execute(MainActivity.MAIN_API_URL + bnetUsername + "/");
             }
         });
     }

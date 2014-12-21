@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +48,7 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
         currentFriend = (Friend) getIntent().getExtras().get(MainActivity.FRIEND_KEY);
 
         //trigger api handler to start
-        new BattleNetAPIHandler(CharacterListActivity.this).execute(MainActivity.MAIN_API_URL + currentFriend.getBnetUsername());
+        new BattleNetAPIHandler(CharacterListActivity.this).execute(MainActivity.MAIN_API_URL + currentFriend.getBnetUsername() + "/");
 
         //initialize some variables
         characterList = new ArrayList<>();
@@ -55,6 +57,25 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
         tvUsername = (TextView) findViewById(R.id.textViewUsername);
         tvParagon = (TextView) findViewById(R.id.textViewParagon);
         lvCharacters = (ListView) findViewById(R.id.listViewCharacterList);
+
+        //on item click logic for listview
+        lvCharacters.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                //pull the character clicked on from the list
+                Character transferCharacter = characterList.get(position);
+
+                //load intent with friend and character information in it
+                Intent intent = new Intent(CharacterListActivity.this, CharacterSheetActivity.class);
+                intent.putExtra(MainActivity.FRIEND_KEY, currentFriend);
+                intent.putExtra(MainActivity.CHARACTER_KEY, transferCharacter);
+
+                //go
+                startActivity(intent);
+            }
+        });
 
         //set text for our text views
         tvUsername.setText("User: " + currentFriend.getBnetUsername());
@@ -95,8 +116,10 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
     @Override
     public void onUpdateJSONObject(JSONObject root) throws JSONException
     {
+        //these will be used to store temporary information later
         String name = "Empty";
         String characterClass = "Empty";
+        String id = "Empty";
 
         //this is the array of characters/heroes from the api
         JSONArray heroesArray = root.getJSONArray("heroes");
@@ -107,13 +130,14 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
             //pull the hero object from array
             JSONObject heroObject = (JSONObject) heroesArray.get(i);
 
-            //pull name and class from object, create Character object
+            //pull name and class and ID from object, create Character object
             name = heroObject.getString("name");
             characterClass = heroObject.getString("class");
+            id = heroObject.getString("id");
 
             //initial caps the class
             characterClass = characterClass.substring(0, 1).toUpperCase() + characterClass.substring(1);
-            Character newCharacter = new Character(name, characterClass);
+            Character newCharacter = new Character(name, characterClass, id);
 
             //add the new character to the list
             characterList.add(newCharacter);
@@ -123,8 +147,10 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
         updateList();
 
         //update paragon level at the top of the screen
-        String paragon = root.getString("paragonLevel");
-        tvParagon.setText("Paragon: " + paragon);
+        currentFriend.setParagon(root.getString("paragonLevel"));
+        tvParagon.setText("Paragon: " + currentFriend.getParagon());
+
+
     }
 
     /**

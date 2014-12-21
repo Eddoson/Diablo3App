@@ -44,6 +44,10 @@
             android:name=".LearningGameActivity"
             android:label="@string/title_activity_learning_game" >
         </activity>
+        <activity
+            android:name=".CharacterSheetActivity"
+            android:label="@string/title_activity_character_sheet" >
+        </activity>
     </application>
 
 </manifest>

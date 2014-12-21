@@ -100,7 +100,7 @@ public class FriendActivity extends ActionBarActivity implements iBattleNetJSONI
             {
                 if (!etFriendText.getText().toString().isEmpty())
                 {
-                    new BattleNetAPIHandler(FriendActivity.this).execute(MainActivity.MAIN_API_URL + etFriendText.getText().toString());
+                    new BattleNetAPIHandler(FriendActivity.this).execute(MainActivity.MAIN_API_URL + etFriendText.getText().toString() + "/");
                 }
             }
         });
