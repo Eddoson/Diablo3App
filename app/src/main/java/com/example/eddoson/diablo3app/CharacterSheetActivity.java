@@ -1,10 +1,12 @@
 package com.example.eddoson.diablo3app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,13 +24,13 @@ import java.util.Iterator;
  *
  * @author Ed Sutton
  */
-public class CharacterSheetActivity extends ActionBarActivity implements iBattleNetJSONInterface
+public class CharacterSheetActivity extends ActionBarActivity implements iBattleNetJSONInterface, View.OnClickListener
 {
     ImageView ivShoulders, ivHead, ivAmulet, ivGloves, ivChest, ivBracers, ivRingL, ivBelt, ivRingR, ivWeaponL, ivBoots, ivWeaponR, ivLegs;
     TextView tvAccountName, tvParagon, tvCharacterName;
     Character currentCharacter;
     Friend currentFriend;
-
+    String[] itemTypeArray = {"shoulders", "head", "neck", "hands", "torso", "bracers", "leftFinger", "rightFinger", "waist", "mainHand", "offHand", "feet", "legs"};
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -56,6 +58,19 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
         ivWeaponR = (ImageView) findViewById(R.id.imageViewWeaponR);
         ivBoots = (ImageView) findViewById(R.id.imageViewBoots);
         ivLegs = (ImageView) findViewById(R.id.imageViewLegs);
+
+        //load up an array of these imageviews
+        ImageView[] imageViewArray = {ivShoulders, ivHead, ivAmulet, ivGloves, ivChest, ivBracers, ivRingL, ivRingR, ivBelt, ivWeaponL, ivWeaponR, ivBoots, ivLegs};
+
+        //for each imageview in imageviewarray
+        for (int i = 0; i < imageViewArray.length; i++)
+        {
+            //set onclick listener
+            imageViewArray[i].setOnClickListener(this);
+
+            //set tag to appropriate item type
+            imageViewArray[i].setTag(itemTypeArray[i]);
+        }
 
         //connect logic to UI components for textviews
         tvAccountName = (TextView) findViewById(R.id.textViewCharacterSheetAccount);
@@ -192,5 +207,23 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
         }
 
         Picasso.with(CharacterSheetActivity.this).load(url).into(ivCurrent);
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        //get the tag from the incoming view that was clicked
+        String itemType = (String) v.getTag();
+
+        //using the itemtype, pull tooltipParams for that item to use in the URL later
+        String tooltipParams = currentCharacter.getItems().get(itemType).get("tooltipParams");
+
+        //concat url for pulling detailed item info
+        String url = MainActivity.DETAILED_ITEM_API_URL + tooltipParams;
+
+        //start battlenetapihandler for the url
+        //TODO: make a simple callback class that implements iBattleNetJSONInterface to handle incoming JSON Object
+    }
+
     }
 }
