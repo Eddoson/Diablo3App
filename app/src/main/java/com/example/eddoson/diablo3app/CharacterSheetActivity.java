@@ -1,6 +1,6 @@
 package com.example.eddoson.diablo3app;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,6 +32,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
     Character currentCharacter;
     Friend currentFriend;
     String[] itemTypeArray = {"shoulders", "head", "neck", "hands", "torso", "bracers", "leftFinger", "rightFinger", "waist", "mainHand", "offHand", "feet", "legs"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -84,7 +86,8 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
         //populate the textviews with information from currentFriend and currentCharacter
         tvAccountName.setText("Account: " + currentFriend.getBnetUsername());
         tvParagon.setText("Paragon: " + currentFriend.getParagon());
-        tvCharacterName.setText("Character: " + currentCharacter.getName());;
+        tvCharacterName.setText("Character: " + currentCharacter.getName());
+        ;
 
         //save the URL to load this character's JSON info using BattleNetAPIHandler
         String characterURL = MainActivity.MAIN_API_URL + currentFriend.getBnetUsername() + "/hero/" + currentCharacter.getId();
@@ -222,8 +225,121 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
         String url = MainActivity.DETAILED_ITEM_API_URL + tooltipParams;
 
         //start battlenetapihandler for the url
-        //TODO: make a simple callback class that implements iBattleNetJSONInterface to handle incoming JSON Object
+        DetailedItemInfoCallback callback = new DetailedItemInfoCallback();
+        new BattleNetAPIHandler(CharacterSheetActivity.this, callback).execute(url);
     }
 
+    class DetailedItemInfoCallback implements iBattleNetJSONInterface
+    {
+        @Override
+        public void onUpdateJSONObject(JSONObject root) throws JSONException
+        {
+            //alert dialog and builder for alert dialog to display item info
+            AlertDialog.Builder adBuilder = new AlertDialog.Builder(CharacterSheetActivity.this);
+            AlertDialog itemDisplayDialog;
+
+            //we will append to these to create the message at the end
+            StringBuilder itemName = new StringBuilder();
+            StringBuilder armor = new StringBuilder();
+            StringBuilder attributes = new StringBuilder();
+            StringBuilder gems = new StringBuilder();
+
+            //initialize stringbuilders to display later
+            //thanks to navastyles for tip on String.format and Stringbuilder better organizing code!!
+            itemName.append(String.format("Item: %s \n", root.getString("name")));
+            armor.append("");
+            attributes.append("Attributes: \n");
+            gems.append("");
+
+            //!!ARMOR SECTION!!
+            //if the armor attribute isn't missing, pull it.
+            if (!root.isNull("armor"))
+            {
+                JSONObject jobArmor = root.getJSONObject("armor");
+                armor.append(String.format("Armor: %s \n", jobArmor.getString("min")));
+            }
+
+            //!!ATTRIBUTES SECTION!!
+            //attributes object,
+            JSONObject jobAttributes = root.getJSONObject("attributes");
+            String[] statTypes = {"primary", "secondary", "passive"};
+
+            //loop through attribute types and append info to attributes stringbuilder
+            for (String thisStatType : statTypes)
+            {
+                //array that holds primary,secondary,passive stats as jsonobjects
+                JSONArray specificAttributeArray = jobAttributes.getJSONArray(thisStatType);
+
+                //loop through the attribute objects and pull strings from them
+                for (int i = 0; i < specificAttributeArray.length(); i++)
+                {
+                    //label the primary, secondary, and passive stats
+                    if (i == 0)
+                    {
+                        String displayStatType = "<" + thisStatType.substring(0, 1).toUpperCase() + thisStatType.substring(1) + ">";
+                        attributes.append(String.format("\t %s \n", displayStatType));
+                    }
+
+                    //get the specific attribute object (primary, secondary, passive)
+                    JSONObject attributeTextObject = specificAttributeArray.getJSONObject(i);
+                    attributes.append(String.format("\t%s\n", attributeTextObject.getString("text")));
+
+                    //add an extra newline for prettiness if we're about to move on to the next attribute type
+                    if (i == specificAttributeArray.length() - 1)
+                    {
+                        attributes.append("\n");
+                    }
+                }
+            }
+            //remove the new line characters from the end of the string
+            attributes.replace(attributes.length() - 2, attributes.length(), "");
+
+            //!!GEM SECTION!!
+            //get json array of gems
+            JSONArray jobGemArray = root.getJSONArray("gems");
+
+            //if there are gems to display, get ready to display them
+            if (jobGemArray.length() > 0)
+            {
+                gems.append("\n\nGems: \n");
+            }
+
+            //loop through each gem and get information
+            for (int j = 0; j < jobGemArray.length(); j++)
+            {
+                //this represents all data of 1 gem
+                JSONObject jsonGemObject = jobGemArray.getJSONObject(j);
+                //append the name of this gem
+                gems.append(String.format("\t%s\n", jsonGemObject.getJSONObject("item").getString("name")));
+
+                //loop through the stat types (primary, secondary, passive) in this gem
+                for (String statType : statTypes)
+                {
+                    //array of various stats for this stat type (primary: +20 str, +40 int, etc)
+                    JSONArray statTypeArray = jsonGemObject.getJSONObject("attributes").getJSONArray(statType);
+                    for (int i = 0; i < statTypeArray.length(); i++)
+                    {
+                        //one of the stats for this stat type (the +20 str, or the +40 int, etc)
+                        JSONObject statTypeObject = statTypeArray.getJSONObject(i);
+                        gems.append(String.format("\t\t%s\n", statTypeObject.getString("text")));
+
+                    }
+                }
+                if (j == jobGemArray.length() - 1)
+                {
+                    //remove the new line characters from the end of the string
+                    gems.replace(gems.length() - 1, gems.length(), "");
+                }
+            }
+
+
+            //customizing builder
+            adBuilder.setMessage(String.format("%s%s%s%s", itemName.toString(), armor.toString(), attributes.toString(), gems.toString()));
+
+            //creating alertdialog
+            itemDisplayDialog = adBuilder.create();
+            itemDisplayDialog.show();
+        }
     }
 }
+

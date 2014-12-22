@@ -1,6 +1,7 @@
 package com.example.eddoson.diablo3app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
@@ -21,11 +22,30 @@ public class BattleNetAPIHandler extends AsyncTask<String, Void, JSONObject>
 {
     Activity activity;
     iBattleNetJSONInterface iJsonInterfaceObject;
+    ProgressDialog progressDialog;
 
     public BattleNetAPIHandler(Activity activity)
     {
         this.activity = activity;
         this.iJsonInterfaceObject = (iBattleNetJSONInterface) activity;
+    }
+
+    public BattleNetAPIHandler(Activity activity, iBattleNetJSONInterface iJsonInterfaceObject)
+    {
+        this.activity = activity;
+        this.iJsonInterfaceObject = iJsonInterfaceObject;
+    }
+
+    @Override
+    protected void onPreExecute()
+    {
+        super.onPreExecute();
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setTitle("Please wait");
+        progressDialog.show();
     }
 
     @Override
@@ -65,6 +85,8 @@ public class BattleNetAPIHandler extends AsyncTask<String, Void, JSONObject>
         {
             e.printStackTrace();
         }
+
+        progressDialog.dismiss();
         super.onPostExecute(root);
     }
 }
