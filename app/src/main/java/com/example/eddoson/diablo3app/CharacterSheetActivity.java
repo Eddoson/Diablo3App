@@ -87,7 +87,6 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
         tvAccountName.setText("Account: " + currentFriend.getBnetUsername());
         tvParagon.setText("Paragon: " + currentFriend.getParagon());
         tvCharacterName.setText("Character: " + currentCharacter.getName());
-        ;
 
         //save the URL to load this character's JSON info using BattleNetAPIHandler
         String characterURL = MainActivity.MAIN_API_URL + currentFriend.getBnetUsername() + "/hero/" + currentCharacter.getId();
@@ -159,7 +158,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
     private void loadImage(String icon, String itemTypeLabel)
     {
         //store url for later
-        String url = "http://media.blizzard.com/d3/icons/items/large/" + icon + ".png";
+        String url = MainActivity.IMAGE_URL + icon + ".png";
 
         //we will replace this imageview with the correct one during switch
         ImageView ivCurrent = null;
@@ -209,6 +208,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
                 Toast.makeText(CharacterSheetActivity.this, "Failed to find item type " + itemTypeLabel, Toast.LENGTH_SHORT).show();
         }
 
+        //load the images using their respective image URLs
         Picasso.with(CharacterSheetActivity.this).load(url).into(ivCurrent);
     }
 
