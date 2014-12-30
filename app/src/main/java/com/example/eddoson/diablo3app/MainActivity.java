@@ -25,6 +25,7 @@ public class MainActivity extends ActionBarActivity
     ParseUser currentUser;
     static String FRIEND_KEY = "friend";
     static String CHARACTER_KEY = "character";
+    static String IS_RANKED_MODE_KEY = "isRankedMode";
     static String MAIN_API_URL = "http://us.battle.net/api/d3/profile/";
     static String DETAILED_ITEM_API_URL = "http://us.battle.net/api/d3/data/";
     static String IMAGE_URL = "http://media.blizzard.com/d3/icons/items/large/";

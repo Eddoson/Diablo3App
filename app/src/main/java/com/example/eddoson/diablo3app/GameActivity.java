@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -32,36 +33,49 @@ import java.util.Random;
 /**
  * @author Ed Sutton
  */
-public class LearningGameActivity extends ActionBarActivity
+public class GameActivity extends ActionBarActivity
 {
     Button btnSubmit;
     RadioGroup rgSelection;
     Spinner spnrItemType;
     ImageView ivItem;
+    TextView tvTitle, tvNumCorrect;
     RadioButton correctRadioButton;
     String[] spinnerItemList = {"All", "Bracers", "Legs", "Chest", "Helm", "Boots", "Shoulders", "Belt", "One-hand", "Two-hand", "Off-hand"};
     ArrayAdapter adapter;
     List<ItemPiece> itemPieceList;
-    int currentItemIndex;
+    int currentItemIndex, numCorrect;
+    boolean isRankedMode;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_learning_game);
+        setContentView(R.layout.activity_game);
 
         //connect logic to UI components
         btnSubmit = (Button) findViewById(R.id.buttonSubmit);
+        tvTitle = (TextView) findViewById(R.id.textViewGameTitle);
+        tvNumCorrect = (TextView) findViewById(R.id.textViewNumCorrect);
         rgSelection = (RadioGroup) findViewById(R.id.radioGroupSelection);
         spnrItemType = (Spinner) findViewById(R.id.spinnerItemType);
         ivItem = (ImageView) findViewById(R.id.imageViewItem);
 
         //initialize
         itemPieceList = new ArrayList<>();
+        numCorrect = 0;
+
+        //check if intent extras are empty
+        if (getIntent().getExtras() != null)
+        {
+            //set the mode for game activity
+            isRankedMode = getIntent().getExtras().getBoolean(MainActivity.IS_RANKED_MODE_KEY);
+            setupMode();
+        }
 
         //setup dropdown box to display item types
-        adapter = new ArrayAdapter(LearningGameActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerItemList);
+        adapter = new ArrayAdapter(GameActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerItemList);
         spnrItemType.setAdapter(adapter);
 
         //setup action to perform when an item is clicked
@@ -94,7 +108,7 @@ public class LearningGameActivity extends ActionBarActivity
                         if (e != null)
                         {
                             //bad, something went wrong
-                            Toast.makeText(LearningGameActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GameActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -139,55 +153,6 @@ public class LearningGameActivity extends ActionBarActivity
                 //for now, do nothing
             }
         });
-
-        //submit button on click logic
-        btnSubmit.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //initialize alert dialog builder that will tell the user if they are correct or not
-                AlertDialog.Builder adBuilder = new AlertDialog.Builder(LearningGameActivity.this);
-
-                //correct answer was selected!
-                if (rgSelection.getCheckedRadioButtonId() == correctRadioButton.getId())
-                {
-                    adBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            //increment currentItemIndex to move through the list of items
-                            incrementItemListIndex();
-
-                            //load new item using the new index
-                            loadNewItem(currentItemIndex);
-
-                            //dismiss the dialog
-                            dialog.dismiss();
-                        }
-                    });
-                    adBuilder.setMessage("Correct! It was " + correctRadioButton.getText());
-                }
-                //wrong answer was selected!
-                else
-                {
-                    adBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            //dismiss the dialog
-                            dialog.dismiss();
-                        }
-                    });
-                    adBuilder.setMessage("Incorrect! Try again!");
-                }
-
-                //show the built alert dialog
-                adBuilder.create().show();
-            }
-        });
     }
 
 
@@ -223,7 +188,7 @@ public class LearningGameActivity extends ActionBarActivity
         ItemPiece selectedItemPiece = itemPieceList.get(listIndex);
 
         //load image from first in list
-        Picasso.with(LearningGameActivity.this).load(selectedItemPiece.getImageUrl()).into(ivItem);
+        Picasso.with(GameActivity.this).load(selectedItemPiece.getImageUrl()).into(ivItem);
 
         //create a random index between 0 and 3
         long seed = System.nanoTime();
@@ -286,6 +251,106 @@ public class LearningGameActivity extends ActionBarActivity
         }
     }
 
+    /**
+     * Sets up correct perspectives for ranked or learning mode
+     */
+    private void setupMode()
+    {
+        //if its ranked mode
+        if (isRankedMode)
+        {
+            tvTitle.setText("Ranked Mode");
+            tvNumCorrect.setText("Correct: 0");
+            //TODO: show or hide timer
+
+            //submit button on click logic
+            btnSubmit.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    //correct answer was selected!
+                    if (rgSelection.getCheckedRadioButtonId() == correctRadioButton.getId())
+                    {
+                        //increase the amount of correct choices
+                        numCorrect++;
+
+                        //set the new number of correct answers to the respective textview
+                        tvNumCorrect.setText("Correct: " + Integer.toString(numCorrect));
+                    }
+
+                    //increment currentItemIndex to move through the list of items
+                    incrementItemListIndex();
+
+                    //load new item using the new index
+                    loadNewItem(currentItemIndex);
+
+                    //uncheck all radio buttons
+                    rgSelection.clearCheck();
+                }
+            });
+
+
+        }
+        //is learning mode
+        else
+        {
+            tvTitle.setText("Learning Mode");
+
+            //submit button on click logic
+            btnSubmit.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    //initialize alert dialog builder that will tell the user if they are correct or not
+                    AlertDialog.Builder adBuilder = new AlertDialog.Builder(GameActivity.this);
+
+                    //correct answer was selected!
+                    if (rgSelection.getCheckedRadioButtonId() == correctRadioButton.getId())
+                    {
+                        adBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                //increment currentItemIndex to move through the list of items
+                                incrementItemListIndex();
+
+                                //load new item using the new index
+                                loadNewItem(currentItemIndex);
+
+                                //dismiss the dialog
+                                dialog.dismiss();
+                            }
+                        });
+                        adBuilder.setMessage("Correct! It was " + correctRadioButton.getText());
+                    }
+                    //wrong answer was selected!
+                    else
+                    {
+                        adBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                //dismiss the dialog
+                                dialog.dismiss();
+                            }
+                        });
+                        adBuilder.setMessage("Incorrect! Try again!");
+                    }
+
+                    //uncheck all radio buttons
+                    rgSelection.clearCheck();
+
+                    //show the built alert dialog
+                    adBuilder.create().show();
+                }
+            });
+        }
+
+    }
 
     /**
      * Simple class to perform a loading bar on a separate thread
@@ -297,7 +362,7 @@ public class LearningGameActivity extends ActionBarActivity
         @Override
         protected void onPreExecute()
         {
-            loadingBar = new ProgressDialog(LearningGameActivity.this);
+            loadingBar = new ProgressDialog(GameActivity.this);
             loadingBar.setMessage("Loading...");
             loadingBar.setIndeterminate(true);
             loadingBar.show();

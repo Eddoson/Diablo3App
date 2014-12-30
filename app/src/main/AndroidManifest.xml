@@ -41,7 +41,7 @@
             android:label="@string/title_activity_game_menu" >
         </activity>
         <activity
-            android:name=".LearningGameActivity"
+            android:name=".GameActivity"
             android:label="@string/title_activity_learning_game" >
         </activity>
         <activity

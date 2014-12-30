@@ -34,7 +34,22 @@ public class GameMenuActivity extends ActionBarActivity
             public void onClick(View v)
             {
                 //go to learning mode
-                startActivity(new Intent(GameMenuActivity.this, LearningGameActivity.class));
+                Intent intent = new Intent(GameMenuActivity.this, GameActivity.class);
+                intent.putExtra(MainActivity.IS_RANKED_MODE_KEY, false);
+                startActivity(intent);
+            }
+        });
+
+        //ranked mode button logic
+        btnRanked.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //go to learning mode
+                Intent intent = new Intent(GameMenuActivity.this, GameActivity.class);
+                intent.putExtra(MainActivity.IS_RANKED_MODE_KEY, true);
+                startActivity(intent);
             }
         });
 
