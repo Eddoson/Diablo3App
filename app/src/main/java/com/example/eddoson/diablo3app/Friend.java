@@ -8,7 +8,8 @@ import java.io.Serializable;
  */
 public class Friend implements Serializable
 {
-    String bnetUsername, paragon;
+    String username, bnetUsername, paragon;
+    int highscore;
 
     public Friend(String bnetUsername, String paragon)
     {
@@ -19,6 +20,39 @@ public class Friend implements Serializable
     public Friend(String bnetUsername)
     {
         this.bnetUsername = bnetUsername;
+    }
+
+    public Friend(String bnetUsername, String paragon, int highscore)
+    {
+        this.bnetUsername = bnetUsername;
+        this.paragon = paragon;
+        this.highscore = highscore;
+    }
+
+    public Friend(String username, int highscore)
+    {
+        this.username = username;
+        this.highscore = highscore;
+    }
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+    public int getHighscore()
+    {
+        return highscore;
+    }
+
+    public void setHighscore(int highscore)
+    {
+        this.highscore = highscore;
     }
 
     public String getBnetUsername()
@@ -47,6 +81,7 @@ public class Friend implements Serializable
         return "Friend{" +
                 "bnetUsername='" + bnetUsername + '\'' +
                 ", paragon='" + paragon + '\'' +
+                ", highscore=" + highscore +
                 '}';
     }
 
@@ -64,6 +99,10 @@ public class Friend implements Serializable
 
         Friend friend = (Friend) o;
 
+        if (highscore != friend.highscore)
+        {
+            return false;
+        }
         if (bnetUsername != null ? !bnetUsername.equals(friend.bnetUsername) : friend.bnetUsername != null)
         {
             return false;
@@ -81,6 +120,7 @@ public class Friend implements Serializable
     {
         int result = bnetUsername != null ? bnetUsername.hashCode() : 0;
         result = 31 * result + (paragon != null ? paragon.hashCode() : 0);
+        result = 31 * result + highscore;
         return result;
     }
 }

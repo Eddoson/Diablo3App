@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.parse.ParseUser;
+
 /**
  * @author Ed Sutton
  */
@@ -16,6 +18,8 @@ public class GameMenuActivity extends ActionBarActivity
     Button btnLearning;
     Button btnRanked;
     Button btnLeaderboard;
+    ParseUser currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -26,6 +30,9 @@ public class GameMenuActivity extends ActionBarActivity
         btnLearning = (Button) findViewById(R.id.buttonLearningMode);
         btnRanked= (Button) findViewById(R.id.buttonRankedMode);
         btnLeaderboard = (Button) findViewById(R.id.buttonLeaderboard);
+
+        //initialize
+        currentUser = ParseUser.getCurrentUser();
 
         //learning mode button logic
         btnLearning.setOnClickListener(new View.OnClickListener()
@@ -53,6 +60,23 @@ public class GameMenuActivity extends ActionBarActivity
             }
         });
 
+        //leaderboard button logic
+        btnLeaderboard.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //make a friend object from this user's information
+                String username = currentUser.getUsername();
+                int highscore = currentUser.getInt("highscore");
+                Friend thisFriend = new Friend(username, highscore);
+
+                //package friend object into intent before starting leaderboard activity
+                Intent intent = new Intent(GameMenuActivity.this, LeaderboardActivity.class);
+                intent.putExtra(MainActivity.FRIEND_KEY, thisFriend);
+                startActivity(intent);
+            }
+        });
     }
 
 
