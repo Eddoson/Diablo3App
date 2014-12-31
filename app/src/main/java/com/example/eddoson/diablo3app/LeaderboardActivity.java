@@ -2,7 +2,6 @@ package com.example.eddoson.diablo3app;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -25,7 +24,6 @@ public class LeaderboardActivity extends ActionBarActivity
     List<Friend> friendList;
     LeaderboardAdapter adapter;
     Friend currentFriend;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -65,16 +63,13 @@ public class LeaderboardActivity extends ActionBarActivity
                 String username;
                 int highscore;
 
-                Log.d("friend", "about to enter for loop: " + parseObjects.toString());
                 //loop through the incoming list of info
                 for (ParseUser object : parseObjects)
                 {
-
                     //create a friend object out of the info
                     username = object.getUsername();
                     highscore = object.getInt("highscore");
                     Friend newFriend = new Friend(username, highscore);
-                    Log.d("friend", newFriend.toString());
 
                     //add that friend object to a list
                     friendList.add(newFriend);

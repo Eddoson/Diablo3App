@@ -1,7 +1,6 @@
 package com.example.eddoson.diablo3app;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,7 @@ public class LeaderboardAdapter extends ArrayAdapter<Friend>
 
         //store this current friend
         Friend currentFriend = friendList.get(position);
-        Log.d("friend", "inside adapter: " + currentFriend.toString());
+
         //connect UI components to logic
         TextView tvPlayerNumber = (TextView) convertView.findViewById(R.id.textViewPlayerNumber);
         TextView tvPlayerName = (TextView) convertView.findViewById(R.id.textViewPlayerName);
