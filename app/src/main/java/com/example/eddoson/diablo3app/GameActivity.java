@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -39,12 +41,14 @@ public class GameActivity extends ActionBarActivity
     RadioGroup rgSelection;
     Spinner spnrItemType;
     ImageView ivItem;
-    TextView tvTitle, tvNumCorrect;
+    TextView tvTitle, tvNumCorrect, tvTimer;
     RadioButton correctRadioButton;
     String[] spinnerItemList = {"All", "Bracers", "Legs", "Chest", "Helm", "Boots", "Shoulders", "Belt", "One-hand", "Two-hand", "Off-hand"};
     ArrayAdapter adapter;
     List<ItemPiece> itemPieceList;
-    int currentItemIndex, numCorrect;
+    ParseUser currentUser;
+    int currentItemIndex, numCorrect, attempedGuesses;
+    CountDownTimer timer;
     boolean isRankedMode;
 
 
@@ -58,6 +62,7 @@ public class GameActivity extends ActionBarActivity
         btnSubmit = (Button) findViewById(R.id.buttonSubmit);
         tvTitle = (TextView) findViewById(R.id.textViewGameTitle);
         tvNumCorrect = (TextView) findViewById(R.id.textViewNumCorrect);
+        tvTimer = (TextView) findViewById(R.id.textViewTimer);
         rgSelection = (RadioGroup) findViewById(R.id.radioGroupSelection);
         spnrItemType = (Spinner) findViewById(R.id.spinnerItemType);
         ivItem = (ImageView) findViewById(R.id.imageViewItem);
@@ -65,6 +70,8 @@ public class GameActivity extends ActionBarActivity
         //initialize
         itemPieceList = new ArrayList<>();
         numCorrect = 0;
+        attempedGuesses = 0;
+        currentUser = ParseUser.getCurrentUser();
 
         //check if intent extras are empty
         if (getIntent().getExtras() != null)
@@ -259,9 +266,52 @@ public class GameActivity extends ActionBarActivity
         //if its ranked mode
         if (isRankedMode)
         {
+            //set title to ranked mode specific text
             tvTitle.setText("Ranked Mode");
             tvNumCorrect.setText("Correct: 0");
-            //TODO: show or hide timer
+
+            //setup timer for ranked mode
+            timer = new CountDownTimer(60000, 1000)
+            {
+                @Override
+                public void onTick(long millisUntilFinished)
+                {
+                    //recalculate new time
+                    int countSeconds = (int) (millisUntilFinished / 1000);
+                    int countMinutes = countSeconds / 60;
+                    countSeconds = countSeconds % 60;
+
+                    //display new time
+                    String timerDisplay = String.format("%02d:%02d", countMinutes, countSeconds);
+                    tvTimer.setText(timerDisplay);
+                }
+
+                @Override
+                public void onFinish()
+                {
+                    //set timer to 0, thanks jared314 for the idea
+                    String timerDisplay = String.format("%02d:%02d", 0, 0);
+                    tvTimer.setText(timerDisplay);
+
+                    //check if this is a new high score
+                    int currentHighscore = currentUser.getInt("highscore");
+
+                    //if this score is better than their highscore, update highscore
+                    if (numCorrect > currentHighscore)
+                    {
+                        currentUser.put("highscore", numCorrect);
+                        currentUser.saveInBackground();
+                    }
+
+                    //TODO: stop user from playing, upload new scores to parse, update leaderboard, etc
+                    //create a dialog to tell the user the game is done
+                    AlertDialog.Builder stopDialog = new AlertDialog.Builder(GameActivity.this);
+                    float percentCorrect = ((float)numCorrect/(float)attempedGuesses) * 100;
+                    stopDialog.setMessage(String.format("Attempted: %s \nCorrect: %s \nIncorrect: %s \nPercentage Correct: %%%.2f", attempedGuesses, numCorrect, (attempedGuesses - numCorrect), percentCorrect));
+                    stopDialog.setTitle("Game Over");
+                    stopDialog.create().show();
+                }
+            };
 
             //submit button on click logic
             btnSubmit.setOnClickListener(new View.OnClickListener()
@@ -285,16 +335,34 @@ public class GameActivity extends ActionBarActivity
                     //load new item using the new index
                     loadNewItem(currentItemIndex);
 
+                    //increment number of guesses
+                    attempedGuesses++;
+
                     //uncheck all radio buttons
                     rgSelection.clearCheck();
                 }
             });
 
+            //create an alert dialog to pop up asking the user if they're ready
+            AlertDialog.Builder startDialogBuilder = new AlertDialog.Builder(GameActivity.this);
+            startDialogBuilder.setMessage("Press 'OK' when you're ready to begin!");
+            startDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    dialog.dismiss();
+                    timer.start();
+                }
+            });
 
+            //present the dialog at activity start
+            startDialogBuilder.create().show();
         }
         //is learning mode
         else
         {
+            //changed title to learning mode
             tvTitle.setText("Learning Mode");
 
             //submit button on click logic

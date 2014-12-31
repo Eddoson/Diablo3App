@@ -48,6 +48,10 @@
             android:name=".CharacterSheetActivity"
             android:label="@string/title_activity_character_sheet" >
         </activity>
+        <activity
+            android:name=".LeaderboardActivity"
+            android:label="@string/title_activity_leaderboard" >
+        </activity>
     </application>
 
 </manifest>

@@ -39,5 +39,9 @@
     <string name="hint_edittext_battlenet_username">Enter your battle.net username and tag</string>
     <string name="title_activity_character_sheet">CharacterSheetActivity</string>
     <string name="string_textview_charactersheet_title">Character Info</string>
+    <string name="title_activity_leaderboard">LeaderboardActivity</string>
+    <string name="string_leaderboard_title">Leaderboard</string>
+    <string name="string_edittext_leaderboard_search">Search for a player...</string>
+    <string name="string_confirm">Confirm</string>
 
 </resources>

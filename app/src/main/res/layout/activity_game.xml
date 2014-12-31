@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/string_textview_learning_game_title"
+        android:text="@string/app_name"
         android:id="@+id/textViewGameTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -29,11 +29,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageViewItem"
-        android:layout_below="@+id/spinnerItemType"
-        android:layout_centerHorizontal="true"
         android:src="@drawable/ic_launcher"
-        android:minHeight="200dp"
-        android:minWidth="200dp"/>
+        android:minHeight="250dp"
+        android:minWidth="250dp"
+        android:background="@drawable/custom_border"
+        android:layout_below="@+id/textViewNumCorrect"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="match_parent"
@@ -51,31 +52,33 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/imageViewItem"
         android:id="@+id/radioGroupSelection"
-        android:gravity="center_vertical|center_horizontal">
+        android:gravity="center_vertical|center_horizontal"
+        >
 
         <RadioButton
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New RadioButton"
             android:id="@+id/radioButtonA"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            />
 
         <RadioButton
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New RadioButton"
             android:id="@+id/radioButtonB"
             android:layout_gravity="center_horizontal"/>
 
         <RadioButton
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New RadioButton"
             android:id="@+id/radioButtonC"
             android:layout_gravity="center_horizontal"/>
 
         <RadioButton
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="New RadioButton"
             android:id="@+id/radioButtonD"
@@ -91,4 +94,14 @@
         android:layout_below="@+id/spinnerItemType"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/textViewTimer"
+        android:layout_below="@+id/spinnerItemType"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
 </RelativeLayout>
