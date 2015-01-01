@@ -2,6 +2,9 @@ package com.example.eddoson.diablo3app;
 
 import com.parse.ParseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -86,6 +89,41 @@ public class Friend implements Serializable
         newFriend.setBnetUsername(bnetUsername);
 
         return newFriend;
+    }
+
+    /**
+     * Takes in a JSONObject and converts its information into a Friend object
+     * @param jsonFriendRoot
+     * @return
+     * @throws JSONException
+     */
+    static Friend fromJSONObject(JSONObject jsonFriendRoot) throws JSONException
+    {
+        Friend newFriend = new Friend();
+
+        newFriend.setUsername(jsonFriendRoot.getString("username"));
+        newFriend.setBnetUsername(jsonFriendRoot.getString("bnetUsername"));
+        newFriend.setParagon(jsonFriendRoot.getString("paragon"));
+        newFriend.setHighscore(jsonFriendRoot.getInt("highscore"));
+
+        return newFriend;
+    }
+
+    /**
+     *
+     * @return JSONObject with friend information packaged
+     * @throws JSONException
+     */
+    public JSONObject toJSONObject() throws JSONException
+    {
+        JSONObject jsonFriendRoot = new JSONObject();
+
+        jsonFriendRoot.put("username", username);
+        jsonFriendRoot.put("bnetUsername", bnetUsername);
+        jsonFriendRoot.put("paragon", paragon);
+        jsonFriendRoot.put("highscore", highscore);
+
+        return jsonFriendRoot;
     }
 
     public String getUsername()

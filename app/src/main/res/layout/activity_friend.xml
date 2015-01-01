@@ -24,7 +24,7 @@
         android:id="@+id/listViewFriends"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textViewLabelUsername"/>
+        android:layout_below="@+id/buttonAdd"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -46,24 +46,5 @@
         android:layout_below="@+id/textViewFriendActivityTitle"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/string_textview_label_username"
-        android:id="@+id/textViewLabelUsername"
-        android:layout_below="@+id/buttonAdd"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/string_textview_label_paragon"
-        android:id="@+id/textViewLabelParagon"
-        android:layout_below="@+id/editTextFriend"
-        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

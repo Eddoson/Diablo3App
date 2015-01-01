@@ -43,5 +43,6 @@
     <string name="string_leaderboard_title">Leaderboard</string>
     <string name="string_edittext_leaderboard_search">Search for a player...</string>
     <string name="string_confirm">Confirm</string>
+    <string name="string_battlenet_username">Battle.Net Username</string>
 
 </resources>

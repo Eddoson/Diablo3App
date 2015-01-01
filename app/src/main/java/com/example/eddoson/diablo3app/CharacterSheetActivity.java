@@ -246,7 +246,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
 
             //initialize stringbuilders to display later
             //thanks to navastyles for tip on String.format and Stringbuilder better organizing code!!
-            itemName.append(String.format("Item: %s \n", root.getString("name")));
+            itemName.append(String.format("Name: %s \n", root.getString("name")));
             armor.append("");
             attributes.append("Attributes: \n");
             gems.append("");
