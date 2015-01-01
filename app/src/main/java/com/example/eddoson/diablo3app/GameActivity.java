@@ -3,6 +3,7 @@ package com.example.eddoson.diablo3app;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -50,7 +51,6 @@ public class GameActivity extends ActionBarActivity
     int currentItemIndex, numCorrect, attempedGuesses;
     CountDownTimer timer;
     boolean isRankedMode;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -258,6 +258,19 @@ public class GameActivity extends ActionBarActivity
         }
     }
 
+    private void resetRankedGame()
+    {
+        //reset variables
+        currentItemIndex = 0;
+        numCorrect = 0;
+        attempedGuesses = 0;
+
+        //randomize list again
+        long seed = System.nanoTime();
+        Collections.shuffle(itemPieceList, new Random(seed));
+
+        setupMode();
+    }
     /**
      * Sets up correct perspectives for ranked or learning mode
      */
@@ -306,9 +319,42 @@ public class GameActivity extends ActionBarActivity
                     //TODO: stop user from playing, upload new scores to parse, update leaderboard, etc
                     //create a dialog to tell the user the game is done
                     AlertDialog.Builder stopDialog = new AlertDialog.Builder(GameActivity.this);
+
+                    //calculate and display statistic for this round
                     float percentCorrect = ((float)numCorrect/(float)attempedGuesses) * 100;
                     stopDialog.setMessage(String.format("Attempted: %s \nCorrect: %s \nIncorrect: %s \nPercentage Correct: %%%.2f", attempedGuesses, numCorrect, (attempedGuesses - numCorrect), percentCorrect));
                     stopDialog.setTitle("Game Over");
+
+                    //retry button logic
+                    stopDialog.setPositiveButton("Retry", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            //dismiss
+                            dialog.dismiss();
+
+                            //reset the ranked game
+                            resetRankedGame();
+                        }
+                    });
+
+                    //quit button logic
+                    stopDialog.setNegativeButton("Quit", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            dialog.dismiss();
+
+                            //go to the game menu
+                            startActivity(new Intent(GameActivity.this, GameMenuActivity.class));
+
+                            //destroy this instance of ranked mode
+                            finish();
+                        }
+                    });
+                    //show the dialog that we created
                     stopDialog.create().show();
                 }
             };

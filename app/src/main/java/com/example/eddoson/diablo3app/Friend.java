@@ -1,5 +1,7 @@
 package com.example.eddoson.diablo3app;
 
+import com.parse.ParseUser;
+
 import java.io.Serializable;
 
 /**
@@ -10,6 +12,14 @@ public class Friend implements Serializable
 {
     String username, bnetUsername, paragon;
     int highscore;
+
+    public Friend()
+    {
+        username = null;
+        bnetUsername = null;
+        paragon = null;
+        highscore = 0;
+    }
 
     public Friend(String bnetUsername, String paragon)
     {
@@ -33,6 +43,49 @@ public class Friend implements Serializable
     {
         this.username = username;
         this.highscore = highscore;
+    }
+
+    /**
+     * Factory method that produces a friend from a ParseUser object
+     * Thanks to jared314 for the idea
+     * @param user
+     * @return
+     */
+    static Friend fromParseUser(ParseUser user)
+    {
+        Friend newFriend = new Friend();
+        newFriend.setUsername(user.getUsername());
+        newFriend.setBnetUsername(user.getString("bnetUsername"));
+        newFriend.setHighscore(user.getInt("highscore"));
+
+        return newFriend;
+    }
+    /**
+     * Factory method that produces a friend from a parse username
+     * Thanks to jared314 for the idea
+     * @param username
+     * @return
+     */
+    static Friend fromParseUsername(String username)
+    {
+        Friend newFriend = new Friend();
+        newFriend.setUsername(username);
+
+        return newFriend;
+    }
+
+    /**
+     * Factory method that produces a friend from a battle net username
+     * Thanks to jared314 for the idea
+     * @param bnetUsername
+     * @return
+     */
+    static Friend fromBattleNetUsername(String bnetUsername)
+    {
+        Friend newFriend = new Friend();
+        newFriend.setBnetUsername(bnetUsername);
+
+        return newFriend;
     }
 
     public String getUsername()
@@ -79,7 +132,8 @@ public class Friend implements Serializable
     public String toString()
     {
         return "Friend{" +
-                "bnetUsername='" + bnetUsername + '\'' +
+                "username='" + username + '\'' +
+                ", bnetUsername='" + bnetUsername + '\'' +
                 ", paragon='" + paragon + '\'' +
                 ", highscore=" + highscore +
                 '}';
@@ -99,15 +153,7 @@ public class Friend implements Serializable
 
         Friend friend = (Friend) o;
 
-        if (highscore != friend.highscore)
-        {
-            return false;
-        }
-        if (bnetUsername != null ? !bnetUsername.equals(friend.bnetUsername) : friend.bnetUsername != null)
-        {
-            return false;
-        }
-        if (paragon != null ? !paragon.equals(friend.paragon) : friend.paragon != null)
+        if (username != null ? !username.equals(friend.username) : friend.username != null)
         {
             return false;
         }
@@ -118,7 +164,8 @@ public class Friend implements Serializable
     @Override
     public int hashCode()
     {
-        int result = bnetUsername != null ? bnetUsername.hashCode() : 0;
+        int result = username != null ? username.hashCode() : 0;
+        result = 31 * result + (bnetUsername != null ? bnetUsername.hashCode() : 0);
         result = 31 * result + (paragon != null ? paragon.hashCode() : 0);
         result = 31 * result + highscore;
         return result;

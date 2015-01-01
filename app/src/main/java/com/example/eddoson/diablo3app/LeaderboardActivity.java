@@ -1,9 +1,14 @@
 package com.example.eddoson.diablo3app;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +26,8 @@ public class LeaderboardActivity extends ActionBarActivity
 {
     TextView tvUsernameandRank;
     ListView lvLeaderboard;
+    EditText etSearchBar;
+    Button btnConfirmSearch;
     List<Friend> friendList;
     LeaderboardAdapter adapter;
     Friend currentFriend;
@@ -34,6 +41,8 @@ public class LeaderboardActivity extends ActionBarActivity
         //connect UI components with logic
         tvUsernameandRank = (TextView) findViewById(R.id.textViewUsernameAndRank);
         lvLeaderboard = (ListView) findViewById(R.id.listViewLeaderboard);
+        etSearchBar = (EditText) findViewById(R.id.editTextSearch);
+        btnConfirmSearch = (Button) findViewById(R.id.buttonConfirmSearch);
 
         //initialize
         friendList = new ArrayList<>();
@@ -60,16 +69,14 @@ public class LeaderboardActivity extends ActionBarActivity
                 }
 
                 //initialize temporary strings
-                String username;
+                String username, bnetUsername;
                 int highscore;
 
                 //loop through the incoming list of info
-                for (ParseUser object : parseObjects)
+                for (ParseUser parseFriend : parseObjects)
                 {
                     //create a friend object out of the info
-                    username = object.getUsername();
-                    highscore = object.getInt("highscore");
-                    Friend newFriend = new Friend(username, highscore);
+                    Friend newFriend = Friend.fromParseUser(parseFriend);
 
                     //add that friend object to a list
                     friendList.add(newFriend);
@@ -82,6 +89,46 @@ public class LeaderboardActivity extends ActionBarActivity
                 //now the friendlist is populated, use the adapter and draw to listview
                 adapter = new LeaderboardAdapter(LeaderboardActivity.this, R.layout.leaderboard_list_component, friendList);
                 lvLeaderboard.setAdapter(adapter);
+            }
+        });
+
+        //confirm button logic
+        btnConfirmSearch.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                String searchedName = etSearchBar.getText().toString();
+                Friend searchFriend = Friend.fromParseUsername(searchedName);
+
+                if (friendList.indexOf(searchFriend) == -1)
+                {
+                    //friend not found
+                    Toast.makeText(LeaderboardActivity.this, String.format("%s not found!", searchedName), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //get the index for the searched friend in the master friend list
+                int foundFriendIndex = friendList.indexOf(searchFriend);
+
+                //pull the friend object from the master friend list
+                searchFriend = friendList.get(foundFriendIndex);
+
+                //create an alert dialog to display the friend's information
+                AlertDialog.Builder adSearchInfoBuilder = new AlertDialog.Builder(LeaderboardActivity.this);
+                adSearchInfoBuilder.setTitle("Search");
+                adSearchInfoBuilder.setMessage(String.format("Username: %s \nBattlenet Tag: %s \nHighscore: %s \nRank: %s", searchFriend.getUsername(), searchFriend.getBnetUsername(), Integer.toString(searchFriend.getHighscore()), Integer.toString(foundFriendIndex + 1)));
+                adSearchInfoBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                    }
+                });
+
+                //show the dialog
+                adSearchInfoBuilder.create().show();
             }
         });
     }
