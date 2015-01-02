@@ -28,11 +28,16 @@ public class Friend implements Serializable
     {
         this.bnetUsername = bnetUsername;
         this.paragon = paragon;
+        this.username = "User Not Registered";
+        this.highscore = 0;
     }
 
     public Friend(String bnetUsername)
     {
         this.bnetUsername = bnetUsername;
+        this.username = "User Not Registered";
+        this.highscore = 0;
+        this.paragon = null;
     }
 
     public Friend(String bnetUsername, String paragon, int highscore)
@@ -40,11 +45,22 @@ public class Friend implements Serializable
         this.bnetUsername = bnetUsername;
         this.paragon = paragon;
         this.highscore = highscore;
+        this.username = "User Not Registered";
     }
 
     public Friend(String username, int highscore)
     {
         this.username = username;
+        this.highscore = highscore;
+        this.bnetUsername = null;
+        this.paragon = null;
+    }
+
+    public Friend(String username, String bnetUsername, String paragon, int highscore)
+    {
+        this.username = username;
+        this.bnetUsername = bnetUsername;
+        this.paragon = paragon;
         this.highscore = highscore;
     }
 

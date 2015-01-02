@@ -15,19 +15,19 @@ public class ExtendedJSONArray extends JSONArray
      * @param index
      * @return
      */
-    public JSONArray removeFromJSONArray(int index) throws JSONException
+    public JSONArray removeFromJSONArray(JSONArray theArray, int index) throws JSONException
     {
         //temporary array to return later
         JSONArray returnArray = new JSONArray();
 
         //loop through the the jsonarray
-        for (int i = 0; i < this.length(); i++)
+        for (int i = 0; i < theArray.length(); i++)
         {
             //if this isn't the index to remove from
             if (i != index)
             {
                 //copy contents
-                returnArray.put(this.getJSONObject(i));
+                returnArray.put(theArray.getJSONObject(i));
             }
 
         }

@@ -53,11 +53,47 @@
             android:layout_weight="1"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutSearchWrapper"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayoutLeaderboardLabels">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/string_textview_label_rank"
+            android:id="@+id/textViewLabelRank"
+            android:layout_weight="1"
+            android:textColor="#FF000000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/string_textview_label_username"
+            android:id="@+id/textViewLabelUsername"
+            android:layout_weight="1"
+            android:textColor="#FF000000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/string_textview_label_highscore"
+            android:id="@+id/textViewLabelHighscore"
+            android:layout_weight="1"
+            android:textColor="#FF000000"/>
+    </LinearLayout>
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listViewLeaderboard"
-        android:layout_below="@+id/linearLayoutSearchWrapper"
+        android:layout_below="@+id/linearLayoutLeaderboardLabels"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

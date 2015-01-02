@@ -16,7 +16,7 @@ public class FriendAdapter extends ArrayAdapter
 {
     Context context;
     int resource;
-    List<Friend> objects;
+    List<Friend> friendList;
 
     public FriendAdapter(Context context, int resource, List<Friend> objects)
     {
@@ -24,7 +24,7 @@ public class FriendAdapter extends ArrayAdapter
 
         this.context = context;
         this.resource = resource;
-        this.objects = objects;
+        this.friendList = objects;
     }
 
     @Override
@@ -36,9 +36,15 @@ public class FriendAdapter extends ArrayAdapter
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(resource, parent, false);
         }
+        //friendlist is empty or if this friend is null, back out
+        //thanks to sKeLeTr0n for the idea!
+        if (friendList.isEmpty() || friendList.get(position) == null)
+        {
+            return convertView;
+        }
 
         //this is the current friend being viewed
-        Friend friend = objects.get(position);
+        Friend friend = friendList.get(position);
 
         //connecting logic to the UI
         TextView tvUsername = (TextView) convertView.findViewById(R.id.textViewUsername);

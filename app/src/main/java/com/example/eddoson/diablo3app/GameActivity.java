@@ -316,7 +316,6 @@ public class GameActivity extends ActionBarActivity
                         currentUser.saveInBackground();
                     }
 
-                    //TODO: stop user from playing, upload new scores to parse, update leaderboard, etc
                     //create a dialog to tell the user the game is done
                     AlertDialog.Builder stopDialog = new AlertDialog.Builder(GameActivity.this);
 

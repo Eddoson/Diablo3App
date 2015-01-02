@@ -44,5 +44,10 @@
     <string name="string_edittext_leaderboard_search">Search for a player...</string>
     <string name="string_confirm">Confirm</string>
     <string name="string_battlenet_username">Battle.Net Username</string>
+    <string name="string_textview_label_bnetusername">Battle.net Username</string>
+    <string name="string_textview_label_character_class">Character Class</string>
+    <string name="string_textview_label_character_name">Character Name</string>
+    <string name="string_textview_label_rank">Rank</string>
+    <string name="string_textview_label_highscore">Highscore</string>
 
 </resources>

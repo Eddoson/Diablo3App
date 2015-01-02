@@ -93,13 +93,13 @@ public class RegisterActivity extends ActionBarActivity implements iBattleNetJSO
         if (!root.isNull("code"))
         {
             //bad username, try again
-            Toast.makeText(RegisterActivity.this, "Battlenet username not found! Try again with username-number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterActivity.this, "Battlenet username not found! Try again with username#number or username-number", Toast.LENGTH_SHORT).show();
             return;
         }
 
         //pull out edit text info, changing usernames to initial caps
         //thanks to Trystan34!!
-        String username = etUsername.getText().toString();
+        String username = etUsername.getText().toString().replaceAll("#", "-");
         username = username.substring(0, 1).toUpperCase() + username.substring(1);
         String password = etPassword.getText().toString();
         String confirmPassword = etConfirmPassword.getText().toString();
@@ -120,7 +120,7 @@ public class RegisterActivity extends ActionBarActivity implements iBattleNetJSO
             return;
         }
 
-        user.put("bnetUsername", etBnetUsername.getText().toString());
+        user.put("bnetUsername", etBnetUsername.getText().toString().replaceAll("#", "-"));
         user.signUpInBackground(new SignUpCallback()
         {
             @Override

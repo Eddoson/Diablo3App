@@ -78,7 +78,7 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
         });
 
         //set text for our text views
-        tvUsername.setText("User: " + currentFriend.getBnetUsername());
+        tvUsername.setText("Account: " + currentFriend.getBnetUsername());
         tvParagon.setText("Paragon: " + currentFriend.getParagon());
     }
 

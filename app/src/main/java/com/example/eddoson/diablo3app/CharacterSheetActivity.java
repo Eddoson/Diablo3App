@@ -31,6 +31,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
     TextView tvAccountName, tvParagon, tvCharacterName;
     Character currentCharacter;
     Friend currentFriend;
+    String[] statTypes = {"primary", "secondary", "passive"};
     String[] itemTypeArray = {"shoulders", "head", "neck", "hands", "torso", "bracers", "leftFinger", "rightFinger", "waist", "mainHand", "offHand", "feet", "legs"};
 
     @Override
@@ -243,6 +244,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
             StringBuilder armor = new StringBuilder();
             StringBuilder attributes = new StringBuilder();
             StringBuilder gems = new StringBuilder();
+            StringBuilder setBonus = new StringBuilder();
 
             //initialize stringbuilders to display later
             //thanks to navastyles for tip on String.format and Stringbuilder better organizing code!!
@@ -250,6 +252,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
             armor.append("");
             attributes.append("Attributes: \n");
             gems.append("");
+            setBonus.append("");
 
             //!!ARMOR SECTION!!
             //if the armor attribute isn't missing, pull it.
@@ -260,9 +263,47 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
             }
 
             //!!ATTRIBUTES SECTION!!
+            attributes = parseAttributesSection(root, attributes);
+
+            //!!GEM SECTION!!
+            gems = parseGemSection(root, gems);
+
+            //!!SET BONUS SECTION!!
+            setBonus = parseSetBonusSection(root, setBonus);
+
+            //customizing builder
+            adBuilder.setMessage(String.format("%s%s%s%s", itemName.toString(), armor.toString(), attributes.toString(), gems.toString()));
+
+            //creating alertdialog
+            itemDisplayDialog = adBuilder.create();
+            itemDisplayDialog.show();
+        }
+
+        /**
+         * Parses the JSONObject received from Battle.net API to retrieve set bonus information
+         * when an item is clicked on
+         * @param root
+         * @param setBonus
+         * @return
+         */
+        private StringBuilder parseSetBonusSection(JSONObject root, StringBuilder setBonus)
+        {
+
+            return setBonus;
+        }
+        /**
+         * Parses the JSONObject received from Battle.net API to retrieve attributes information
+         * when an item is clicked on
+         * @param root
+         * @param attributes
+         * @return
+         * @throws JSONException
+         */
+        private StringBuilder parseAttributesSection(JSONObject root, StringBuilder attributes) throws JSONException
+        {
             //attributes object,
             JSONObject jobAttributes = root.getJSONObject("attributes");
-            String[] statTypes = {"primary", "secondary", "passive"};
+
 
             //loop through attribute types and append info to attributes stringbuilder
             for (String thisStatType : statTypes)
@@ -294,7 +335,18 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
             //remove the new line characters from the end of the string
             attributes.replace(attributes.length() - 2, attributes.length(), "");
 
-            //!!GEM SECTION!!
+            return attributes;
+        }
+        /**
+         * Parses the JSONObject received from Battle.net API to retrieve gem information
+         * when an item is clicked on
+         * @param root
+         * @param gems
+         * @return
+         * @throws JSONException
+         */
+        private StringBuilder parseGemSection(JSONObject root, StringBuilder gems) throws JSONException
+        {
             //get json array of gems
             JSONArray jobGemArray = root.getJSONArray("gems");
 
@@ -331,14 +383,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
                     gems.replace(gems.length() - 1, gems.length(), "");
                 }
             }
-
-
-            //customizing builder
-            adBuilder.setMessage(String.format("%s%s%s%s", itemName.toString(), armor.toString(), attributes.toString(), gems.toString()));
-
-            //creating alertdialog
-            itemDisplayDialog = adBuilder.create();
-            itemDisplayDialog.show();
+            return gems;
         }
     }
 }
