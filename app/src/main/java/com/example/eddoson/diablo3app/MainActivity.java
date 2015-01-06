@@ -20,7 +20,6 @@ public class MainActivity extends ActionBarActivity
     Button btnFriends;
     Button btnCharacters;
     Button btnGame;
-    Button btnLogout;
     TextView tvLoggedInAs;
     ParseUser currentUser;
     static String FRIEND_KEY = "friend";
@@ -38,7 +37,6 @@ public class MainActivity extends ActionBarActivity
 
         //connect logic to the UI components
         btnFriends = (Button) findViewById(R.id.buttonFriends);
-        btnLogout = (Button) findViewById(R.id.buttonLogout);
         btnGame = (Button) findViewById(R.id.buttonGame);
         btnCharacters = (Button) findViewById(R.id.buttonCharacters);
         tvLoggedInAs = (TextView) findViewById(R.id.textViewLoggedInAs);
@@ -70,18 +68,6 @@ public class MainActivity extends ActionBarActivity
             tvLoggedInAs.setText("Not logged in!!");
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
-
-        //logout button logic
-        btnLogout.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                ParseUser.logOut();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
 
         //game button logic
         btnGame.setOnClickListener(new View.OnClickListener()
@@ -128,10 +114,17 @@ public class MainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.action_logout)
         {
-            return true;
+            //log the user out from parse
+            ParseUser.logOut();
+
+            //go to the login activity
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+            //destroy this instance of thise activity
+            finish();
+            return  true;
         }
 
         return super.onOptionsItemSelected(item);

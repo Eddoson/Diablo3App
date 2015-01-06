@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -112,9 +113,22 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.action_main_menu)
         {
+            //if user wants to go to main menu, start the activity
+            startActivity(new Intent(this, MainActivity.class));
             return true;
+        } else if (id == R.id.action_logout)
+        {
+            //log the user out from parse
+            ParseUser.logOut();
+
+            //go to the login activity
+            startActivity(new Intent(this, LoginActivity.class));
+
+            //destroy this instance of thise activity
+            finish();
+            return  true;
         }
 
         return super.onOptionsItemSelected(item);

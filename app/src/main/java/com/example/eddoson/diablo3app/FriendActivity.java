@@ -218,9 +218,22 @@ public class FriendActivity extends ActionBarActivity implements iBattleNetJSONI
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.action_main_menu)
         {
+            //if user wants to go to main menu, start the activity
+            startActivity(new Intent(this, MainActivity.class));
             return true;
+        } else if (id == R.id.action_logout)
+        {
+            //log the user out from parse
+            ParseUser.logOut();
+
+            //go to the login activity
+            startActivity(new Intent(this, LoginActivity.class));
+
+            //destroy this instance of thise activity
+            finish();
+            return  true;
         }
 
         return super.onOptionsItemSelected(item);

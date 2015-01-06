@@ -49,5 +49,8 @@
     <string name="string_textview_label_character_name">Character Name</string>
     <string name="string_textview_label_rank">Rank</string>
     <string name="string_textview_label_highscore">Highscore</string>
+    <string name="action_main_menu">Main Menu</string>
+    <string name="action_logout">Logout</string>
 
 </resources>
+
