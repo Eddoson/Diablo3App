@@ -44,10 +44,11 @@ public class GameActivity extends ActionBarActivity
     ImageView ivItem;
     TextView tvTitle, tvNumCorrect, tvTimer;
     RadioButton correctRadioButton;
-    String[] spinnerItemList = {"All", "Bracers", "Legs", "Chest", "Helm", "Boots", "Shoulders", "Belt", "One-hand", "Two-hand", "Off-hand"};
+    String[] spinnerItemList = {"All", "Bracers", "Pants", "Chest", "Helm", "Boots", "Shoulders", "Belt", "One-hand", "Two-hand", "Off-hand"};
     ArrayAdapter adapter;
     List<ItemPiece> itemPieceList;
     ParseUser currentUser;
+    AlertDialog adOKToBegin;
     int currentItemIndex, numCorrect, attempedGuesses;
     CountDownTimer timer;
     boolean isRankedMode;
@@ -72,6 +73,7 @@ public class GameActivity extends ActionBarActivity
         numCorrect = 0;
         attempedGuesses = 0;
         currentUser = ParseUser.getCurrentUser();
+        adOKToBegin = new AlertDialog.Builder(GameActivity.this).create();
 
         //check if intent extras are empty
         if (getIntent().getExtras() != null)
@@ -149,6 +151,9 @@ public class GameActivity extends ActionBarActivity
 
                         //stop loading bar
                         progressDialogHandler.onPostExecute(null);
+
+                        //reset the ranked game
+                        resetRankedGame();
                     }
                 });
             }
@@ -283,6 +288,12 @@ public class GameActivity extends ActionBarActivity
             tvTitle.setText("Ranked Mode");
             tvNumCorrect.setText("Correct: 0");
 
+            //cancel timer if it's going already
+            if (timer != null)
+            {
+                timer.cancel();
+            }
+
             //setup timer for ranked mode
             timer = new CountDownTimer(60000, 1000)
             {
@@ -401,8 +412,13 @@ public class GameActivity extends ActionBarActivity
                 }
             });
 
-            //present the dialog at activity start
-            startDialogBuilder.create().show();
+            //if this dialog is already up then don't make another one
+            if (!adOKToBegin.isShowing())
+            {
+                //present the dialog at activity start
+                adOKToBegin = startDialogBuilder.create();
+                adOKToBegin.show();
+            }
         }
         //is learning mode
         else
