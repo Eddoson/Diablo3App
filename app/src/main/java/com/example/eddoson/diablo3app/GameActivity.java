@@ -426,7 +426,7 @@ public class GameActivity extends ActionBarActivity
             //changed title to learning mode
             tvTitle.setText("Learning Mode");
 
-            //submit button on click logic
+            //submit button on click logic here
             btnSubmit.setOnClickListener(new View.OnClickListener()
             {
                 @Override
