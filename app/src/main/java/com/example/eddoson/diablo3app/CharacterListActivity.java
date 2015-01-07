@@ -34,11 +34,24 @@ public class CharacterListActivity extends ActionBarActivity implements iBattleN
     List<Character> characterList;
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+        //checking to see if user is still logged in
+        if (ParseUser.getCurrentUser() == null)
+        {
+            //no one should be here...
+            finish();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_list);
 
+        //checking if bundles are empty
         if (getIntent().getExtras() == null)
         {
             //bad, bundle was empty

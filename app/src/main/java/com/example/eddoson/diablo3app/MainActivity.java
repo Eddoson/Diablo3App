@@ -30,10 +30,24 @@ public class MainActivity extends ActionBarActivity
     static String IMAGE_URL = "http://media.blizzard.com/d3/icons/items/large/";
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        //checking to see if user is still logged in
+        if (ParseUser.getCurrentUser() == null)
+        {
+            //no one should be here...
+            finish();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //connect logic to the UI components
         btnFriends = (Button) findViewById(R.id.buttonFriends);

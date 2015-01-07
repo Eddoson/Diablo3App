@@ -2,6 +2,7 @@ package com.example.eddoson.diablo3app;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 /**
  * Display character's items
@@ -35,11 +37,35 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
     String[] statTypes = {"primary", "secondary", "passive"};
     String[] itemTypeArray = {"shoulders", "head", "neck", "hands", "torso", "bracers", "leftFinger", "rightFinger", "waist", "mainHand", "offHand", "feet", "legs"};
 
+    //number of characters in a line before a new line
+    int charLineLimit = 45;
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        //checking to see if user is still logged in
+        if (ParseUser.getCurrentUser() == null)
+        {
+            //no one should be here...
+            finish();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_sheet);
+
+        //check screen dimensions to determine character limit for a string
+        Point sizePoint = new Point();
+        getWindowManager().getDefaultDisplay().getSize(sizePoint);
+        if (sizePoint.x <= 1080 && sizePoint.y <= 1800)
+        {
+            charLineLimit = 25;
+        }
 
         if (getIntent().getExtras() == null)
         {
@@ -283,10 +309,13 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
             gems = parseGemSection(root, gems);
 
             //!!SET BONUS SECTION!!
-            setBonus = parseSetBonusSection(root, setBonus);
+            if (!root.isNull("set"))
+            {
+                setBonus = parseSetBonusSection(root, setBonus);
+            }
 
             //customizing builder
-            adBuilder.setMessage(String.format("%s%s%s%s", itemName.toString(), armor.toString(), attributes.toString(), gems.toString()));
+            adBuilder.setMessage(String.format("%s%s%s%s%s", itemName.toString(), armor.toString(), attributes.toString(), gems.toString(), setBonus.toString()));
 
             //creating alertdialog
             itemDisplayDialog = adBuilder.create();
@@ -300,8 +329,45 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
          * @param setBonus
          * @return
          */
-        private StringBuilder parseSetBonusSection(JSONObject root, StringBuilder setBonus)
+        private StringBuilder parseSetBonusSection(JSONObject root, StringBuilder setBonus) throws JSONException
         {
+            //set bonus root
+            JSONObject jobSetBonuses = root.getJSONObject("set");
+
+            //initialize the set portion to display later with the name of the item
+            setBonus.append(String.format("\n\nSet: \n%s", jobSetBonuses.getString("name")));
+
+            //array of set bonuses per rank
+            JSONArray jarrayRanks = jobSetBonuses.getJSONArray("ranks");
+
+            //loop through each rank
+            for (int i = 0; i < jarrayRanks.length(); i++)
+            {
+                //this is a rank object
+                JSONObject thisRankObj = jarrayRanks.getJSONObject(i);
+
+                //number of pieces to acquire this rank
+                String requiredNum = thisRankObj.getString("required");
+
+                //append to master stringbuilder
+                setBonus.append(String.format("\n\tPieces: %s", requiredNum));
+
+                for (String statType : statTypes)
+                {
+                    //json array that stores the bonuses for this rank
+                    JSONArray statObject = thisRankObj.getJSONObject("attributes").getJSONArray(statType);
+
+                    for (int j = 0; j < statObject.length(); j++)
+                    {
+                        JSONObject bonusesObject = statObject.getJSONObject(j);
+                        String bonusesText = bonusesObject.getString("text");
+
+                        //append text field to our master stringbuilder
+                        setBonus.append(String.format("\n\t\t%s", addLinebreaks(bonusesText, charLineLimit, "\n\t\t")));
+                    }
+
+                }
+            }
 
             return setBonus;
         }
@@ -337,7 +403,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
 
                     //get the specific attribute object (primary, secondary, passive)
                     JSONObject attributeTextObject = specificAttributeArray.getJSONObject(i);
-                    attributes.append(String.format("\t%s\n", attributeTextObject.getString("text")));
+                    attributes.append(String.format("\t%s\n", addLinebreaks(attributeTextObject.getString("text"), charLineLimit, "\n\t")));
 
                     //add an extra newline for prettiness if we're about to move on to the next attribute type
                     if (i == specificAttributeArray.length() - 1)
@@ -398,6 +464,30 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
                 }
             }
             return gems;
+        }
+
+        /**
+         * Formatter to straighten text correctly
+         * Thanks to EnjoyMikeHunt for the contribution!
+         * @param input
+         * @param maxLineLength
+         * @return
+         */
+        public String addLinebreaks(String input, int maxLineLength, String formatBuffer) {
+            StringTokenizer tok = new StringTokenizer(input, " ");
+            StringBuilder output = new StringBuilder(input.length());
+            int lineLen = 0;
+            while (tok.hasMoreTokens()) {
+                String word = tok.nextToken() + " ";
+
+                if (lineLen + word.length() > maxLineLength) {
+                    output.append(formatBuffer);
+                    lineLen = 0;
+                }
+                output.append(word);
+                lineLen += word.length();
+            }
+            return output.toString();
         }
     }
 }

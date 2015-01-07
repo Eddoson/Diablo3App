@@ -30,8 +30,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageViewItem"
         android:src="@drawable/ic_launcher"
-        android:minHeight="250dp"
-        android:minWidth="250dp"
+        android:minHeight="@dimen/activity_game_image_size"
+        android:minWidth="@dimen/activity_game_image_size"
         android:background="@drawable/custom_border"
         android:layout_below="@+id/textViewNumCorrect"
         android:layout_centerHorizontal="true"/>
@@ -47,7 +47,7 @@
 
     <RadioGroup
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_above="@+id/buttonSubmit"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/imageViewItem"

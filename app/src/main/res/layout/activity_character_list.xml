@@ -45,7 +45,8 @@
         android:id="@+id/linearLayoutCharacterListLabels"
         android:layout_below="@+id/textViewParagon"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:minHeight="@dimen/list_view_height">
 
         <TextView
             android:layout_width="match_parent"
@@ -54,7 +55,9 @@
             android:text="@string/string_textview_label_character_name"
             android:id="@+id/textViewLabelCharacterName"
             android:layout_weight="1"
-            android:textColor="#FF000000"/>
+            android:textColor="#FF000000"
+            android:minHeight="@dimen/list_view_height"
+            android:textSize="@dimen/list_view_text_size"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -63,7 +66,9 @@
             android:text="@string/string_textview_label_character_class"
             android:id="@+id/textViewLabelClass"
             android:layout_weight="1"
-            android:textColor="#FF000000"/>
+            android:textColor="#FF000000"
+            android:minHeight="@dimen/list_view_height"
+            android:textSize="@dimen/list_view_text_size"/>
     </LinearLayout>
 
     <ListView

@@ -59,7 +59,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutSearchWrapper"
         android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayoutLeaderboardLabels">
+        android:id="@+id/linearLayoutLeaderboardLabels"
+        android:minHeight="@dimen/list_view_height">
 
         <TextView
             android:layout_width="match_parent"
@@ -68,7 +69,9 @@
             android:text="@string/string_textview_label_rank"
             android:id="@+id/textViewLabelRank"
             android:layout_weight="1"
-            android:textColor="#FF000000"/>
+            android:textColor="#FF000000"
+            android:minHeight="@dimen/list_view_height"
+            android:textSize="@dimen/list_view_text_size"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -77,7 +80,9 @@
             android:text="@string/string_textview_label_username"
             android:id="@+id/textViewLabelUsername"
             android:layout_weight="1"
-            android:textColor="#FF000000"/>
+            android:textColor="#FF000000"
+            android:minHeight="@dimen/list_view_height"
+            android:textSize="@dimen/list_view_text_size"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -86,7 +91,9 @@
             android:text="@string/string_textview_label_highscore"
             android:id="@+id/textViewLabelHighscore"
             android:layout_weight="1"
-            android:textColor="#FF000000"/>
+            android:textColor="#FF000000"
+            android:minHeight="@dimen/list_view_height"
+            android:textSize="@dimen/list_view_text_size"/>
     </LinearLayout>
 
     <ListView

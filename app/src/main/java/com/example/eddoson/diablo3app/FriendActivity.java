@@ -43,6 +43,18 @@ public class FriendActivity extends ActionBarActivity implements iBattleNetJSONI
     ListPopupWindow lpwFriendChoiceDropDown;
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        if (ParseUser.getCurrentUser() == null)
+        {
+            //no one should be here...
+            finish();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);

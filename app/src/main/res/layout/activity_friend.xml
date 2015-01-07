@@ -45,7 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonAdd"
         android:layout_centerHorizontal="true"
-        android:id="@+id/linearLayoutListHeader">
+        android:id="@+id/linearLayoutListHeader"
+        android:minHeight="@dimen/list_view_height">
 
         <TextView
             android:layout_width="match_parent"
@@ -54,7 +55,9 @@
             android:text="@string/string_textview_label_username"
             android:id="@+id/textViewHeaderUsername"
             android:layout_weight="1"
-            android:textColor="#FF000000"/>
+            android:textColor="#FF000000"
+            android:minHeight="@dimen/list_view_height"
+            android:textSize="@dimen/list_view_text_size"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -63,7 +66,9 @@
             android:text="@string/string_textview_label_bnetusername"
             android:id="@+id/textViewHeaderBnetUsername"
             android:layout_weight="1"
-            android:textColor="#ff000000"/>
+            android:textColor="#ff000000"
+            android:minHeight="@dimen/list_view_height"
+            android:textSize="@dimen/list_view_text_size"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -72,7 +77,9 @@
             android:text="@string/string_textview_label_paragon"
             android:id="@+id/textViewHeaderParagon"
             android:layout_weight="1"
-            android:textColor="#ff000000"/>
+            android:textColor="#ff000000"
+            android:minHeight="@dimen/list_view_height"
+            android:textSize="@dimen/list_view_text_size"/>
     </LinearLayout>
 
     <ListView
