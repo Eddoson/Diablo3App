@@ -19,7 +19,9 @@ public class MainActivity extends ActionBarActivity
 {
     Button btnFriends;
     Button btnCharacters;
-    Button btnGame;
+    Button btnLearning;
+    Button btnRanked;
+    Button btnLeaderboard;
     TextView tvLoggedInAs;
     ParseUser currentUser;
     static String FRIEND_KEY = "friend";
@@ -51,8 +53,10 @@ public class MainActivity extends ActionBarActivity
 
         //connect logic to the UI components
         btnFriends = (Button) findViewById(R.id.buttonFriends);
-        btnGame = (Button) findViewById(R.id.buttonGame);
         btnCharacters = (Button) findViewById(R.id.buttonCharacters);
+        btnLeaderboard = (Button) findViewById(R.id.buttonLeaderboard);
+        btnLearning = (Button) findViewById(R.id.buttonLearningMode);
+        btnRanked = (Button) findViewById(R.id.buttonRankedMode);
         tvLoggedInAs = (TextView) findViewById(R.id.textViewLoggedInAs);
 
         //initialize
@@ -83,17 +87,6 @@ public class MainActivity extends ActionBarActivity
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
 
-        //game button logic
-        btnGame.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                //go to the game menu
-                startActivity(new Intent(MainActivity.this, GameMenuActivity.class));
-            }
-        });
-
         //character list button logic
         btnCharacters.setOnClickListener(new View.OnClickListener()
         {
@@ -106,6 +99,50 @@ public class MainActivity extends ActionBarActivity
                 //create intent, put Friend object into it, start character list activity
                 Intent intent = new Intent(MainActivity.this, CharacterListActivity.class);
                 intent.putExtra(MainActivity.FRIEND_KEY, newFriend);
+                startActivity(intent);
+            }
+        });
+
+        //learning mode button logic
+        btnLearning.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //go to learning mode
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                intent.putExtra(MainActivity.IS_RANKED_MODE_KEY, false);
+                startActivity(intent);
+            }
+        });
+
+        //ranked mode button logic
+        btnRanked.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //go to learning mode
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                intent.putExtra(MainActivity.IS_RANKED_MODE_KEY, true);
+                startActivity(intent);
+            }
+        });
+
+        //leaderboard button logic
+        btnLeaderboard.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //make a friend object from this user's information
+                String username = currentUser.getUsername();
+                int highscore = currentUser.getInt("highscore");
+                Friend thisFriend = new Friend(username, highscore);
+
+                //package friend object into intent before starting leaderboard activity
+                Intent intent = new Intent(MainActivity.this, LeaderboardActivity.class);
+                intent.putExtra(MainActivity.FRIEND_KEY, thisFriend);
                 startActivity(intent);
             }
         });

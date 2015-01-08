@@ -69,9 +69,10 @@
             android:text="@string/string_textview_label_rank"
             android:id="@+id/textViewLabelRank"
             android:layout_weight="1"
-            android:textColor="#FF000000"
+            android:textColor="#FFFFFFFF"
             android:minHeight="@dimen/list_view_height"
-            android:textSize="@dimen/list_view_text_size"/>
+            android:textSize="@dimen/list_view_text_size"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -80,9 +81,10 @@
             android:text="@string/string_textview_label_username"
             android:id="@+id/textViewLabelUsername"
             android:layout_weight="1"
-            android:textColor="#FF000000"
+            android:textColor="#FFFFFFFF"
             android:minHeight="@dimen/list_view_height"
-            android:textSize="@dimen/list_view_text_size"/>
+            android:textSize="@dimen/list_view_text_size"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -91,9 +93,10 @@
             android:text="@string/string_textview_label_highscore"
             android:id="@+id/textViewLabelHighscore"
             android:layout_weight="1"
-            android:textColor="#FF000000"
+            android:textColor="#FFFFFFFF"
             android:minHeight="@dimen/list_view_height"
-            android:textSize="@dimen/list_view_text_size"/>
+            android:textSize="@dimen/list_view_text_size"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <ListView

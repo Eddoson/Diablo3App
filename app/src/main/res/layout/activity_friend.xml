@@ -55,9 +55,10 @@
             android:text="@string/string_textview_label_username"
             android:id="@+id/textViewHeaderUsername"
             android:layout_weight="1"
-            android:textColor="#FF000000"
+            android:textColor="#FFFFFFFF"
             android:minHeight="@dimen/list_view_height"
-            android:textSize="@dimen/list_view_text_size"/>
+            android:textSize="@dimen/list_view_text_size"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -66,9 +67,10 @@
             android:text="@string/string_textview_label_bnetusername"
             android:id="@+id/textViewHeaderBnetUsername"
             android:layout_weight="1"
-            android:textColor="#ff000000"
+            android:textColor="#FFFFFFFF"
             android:minHeight="@dimen/list_view_height"
-            android:textSize="@dimen/list_view_text_size"/>
+            android:textSize="@dimen/list_view_text_size"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -77,9 +79,10 @@
             android:text="@string/string_textview_label_paragon"
             android:id="@+id/textViewHeaderParagon"
             android:layout_weight="1"
-            android:textColor="#ff000000"
+            android:textColor="#FFFFFFFF"
             android:minHeight="@dimen/list_view_height"
-            android:textSize="@dimen/list_view_text_size"/>
+            android:textSize="@dimen/list_view_text_size"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <ListView

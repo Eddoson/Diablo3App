@@ -55,9 +55,10 @@
             android:text="@string/string_textview_label_character_name"
             android:id="@+id/textViewLabelCharacterName"
             android:layout_weight="1"
-            android:textColor="#FF000000"
+            android:textColor="#FFFFFFFF"
             android:minHeight="@dimen/list_view_height"
-            android:textSize="@dimen/list_view_text_size"/>
+            android:textSize="@dimen/list_view_text_size"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -66,9 +67,10 @@
             android:text="@string/string_textview_label_character_class"
             android:id="@+id/textViewLabelClass"
             android:layout_weight="1"
-            android:textColor="#FF000000"
+            android:textColor="#FFFFFFFF"
             android:minHeight="@dimen/list_view_height"
-            android:textSize="@dimen/list_view_text_size"/>
+            android:textSize="@dimen/list_view_text_size"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <ListView

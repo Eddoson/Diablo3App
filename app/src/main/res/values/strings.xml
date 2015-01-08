@@ -15,7 +15,7 @@
     <string name="hint_edittext_confirm_password">Confirm your password</string>
     <string name="string_button_done">Done</string>
     <string name="string_textview_main_title">Main Menu</string>
-    <string name="string_button_friends">Friends</string>
+    <string name="string_button_friends">Friends List</string>
     <string name="string_button_characters">View Your Characters</string>
     <string name="string_button_game">Scroll of Identify</string>
     <string name="title_activity_friend">FriendActivity</string>
@@ -29,9 +29,9 @@
     <string name="string_button_logout">Logout</string>
     <string name="title_activity_game_menu">GameMenuActivity</string>
     <string name="string_textview_game_menu_title">Game Menu</string>
-    <string name="string_button_learning_mode">Learning Mode</string>
-    <string name="string_button_ranked_mode">Ranked Mode</string>
-    <string name="string_button_leaderboard">Leaderboards</string>
+    <string name="string_button_learning_mode">Game Learning Mode</string>
+    <string name="string_button_ranked_mode">Game Ranked Mode</string>
+    <string name="string_button_leaderboard">Game Leaderboards</string>
     <string name="title_activity_learning_game">LearningGameActivity</string>
     <string name="string_textview_learning_game_title">Learning Mode</string>
     <string name="string_button_submit">Submit</string>

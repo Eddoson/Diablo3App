@@ -40,8 +40,8 @@ public class GameMenuActivity extends ActionBarActivity
         setContentView(R.layout.activity_game_menu);
 
         //connect logic to UI components
-        btnLearning = (Button) findViewById(R.id.buttonLearningMode);
-        btnRanked= (Button) findViewById(R.id.buttonRankedMode);
+        btnLearning = (Button) findViewById(R.id.buttonGameLearningMode);
+        btnRanked= (Button) findViewById(R.id.buttonGameRankedMode);
         btnLeaderboard = (Button) findViewById(R.id.buttonLeaderboard);
 
         //initialize
@@ -90,6 +90,7 @@ public class GameMenuActivity extends ActionBarActivity
                 startActivity(intent);
             }
         });
+
     }
 
 

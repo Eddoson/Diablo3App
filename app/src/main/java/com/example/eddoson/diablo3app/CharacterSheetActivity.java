@@ -31,7 +31,7 @@ import java.util.StringTokenizer;
 public class CharacterSheetActivity extends ActionBarActivity implements iBattleNetJSONInterface, View.OnClickListener
 {
     ImageView ivShoulders, ivHead, ivAmulet, ivGloves, ivChest, ivBracers, ivRingL, ivBelt, ivRingR, ivWeaponL, ivBoots, ivWeaponR, ivLegs;
-    TextView tvAccountName, tvParagon, tvCharacterName;
+    TextView tvAccountName, tvParagon, tvCharacterName, tvCharacterClass;
     Character currentCharacter;
     Friend currentFriend;
     String[] statTypes = {"primary", "secondary", "passive"};
@@ -106,6 +106,8 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
         tvAccountName = (TextView) findViewById(R.id.textViewCharacterSheetAccount);
         tvCharacterName = (TextView) findViewById(R.id.textViewCharacterSheetCharacterName);
         tvParagon = (TextView) findViewById(R.id.textViewCharacterSheetParagon);
+        tvCharacterClass = (TextView) findViewById(R.id.textViewCharacterClass);
+
 
         //pull friend and character info from the intent
         currentFriend = (Friend) getIntent().getExtras().get(MainActivity.FRIEND_KEY);
@@ -115,6 +117,7 @@ public class CharacterSheetActivity extends ActionBarActivity implements iBattle
         tvAccountName.setText("Account: " + currentFriend.getBnetUsername());
         tvParagon.setText("Paragon: " + currentFriend.getParagon());
         tvCharacterName.setText("Character: " + currentCharacter.getName());
+        tvCharacterClass.setText("Class: " + currentCharacter.getCharacterClass());
 
         //save the URL to load this character's JSON info using BattleNetAPIHandler
         String characterURL = MainActivity.MAIN_API_URL + currentFriend.getBnetUsername() + "/hero/" + currentCharacter.getId();
